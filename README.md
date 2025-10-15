@@ -9,7 +9,6 @@ Su objetivo es fomentar el uso compartido de recursos dentro del campus, promovi
 ### 🔹 Gestión de objetos
 - Alta, edición y baja de objetos
 - Listado y filtrado por estado o categoría
-- Generación de QR para identificar objetos
 
 ### 🔹 Gestión de reservas y préstamos
 - Crear reserva con fechas de inicio y fin
