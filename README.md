@@ -28,9 +28,9 @@ Su objetivo es fomentar el uso compartido de recursos dentro del campus, promovi
 ---
 
 ## Tecnologías utilizadas
-- **Backend:** 
-- **Frontend:** 
-- **Base de datos:**
+- **Backend:** ASP.NET MVC (C#)
+- **Frontend:** HTML5,CSS, JavaScript
+- **Base de datos:** SQL Server
 - **Control de versiones:** Git + GitHub  
 
 ---
