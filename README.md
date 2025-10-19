@@ -1,7 +1,8 @@
 # 🎓 Campus Share
 
 **Campus Share** es una aplicación web universitaria que permite a los estudiantes registrar, reservar y pedir prestados objetos (como libros, calculadoras, apuntes o auriculares) de manera organizada y segura.  
-Su objetivo es fomentar el uso compartido de recursos dentro del campus, promoviendo la colaboración y el aprovechamiento colectivo de materiales.
+Su objetivo es fomentar el uso compartido de recursos dentro del campus, promoviendo la colaboración y el aprovechamiento colectivo de materiales.  
+
 
 
 ## Funcionalidades principales
