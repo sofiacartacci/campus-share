@@ -12,6 +12,5 @@ public class Prestamo
         this.fecInicio = fecInicio;
         this.fecFin = fecFin;
         this.articulo = articulo;
-        // inicia siempre como VIGENTE
     }
 }

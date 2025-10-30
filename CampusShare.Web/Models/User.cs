@@ -1,21 +1,20 @@
-using System.ComponentModel.DataAnnotations;
-
 namespace CampusShare.Web.Models
 {
     public class User
     {
-        public int Id { get; set; }
+        protected string id { get; set; }
+        protected string nombre { get; set; }
+        protected string apellido { get; set; }
+        protected string dni { get; set; }
+        protected string email { get; set; }
 
-        [Required, Display(Name = "Nombre completo")]
-        public string? Name { get; set; }
-
-        [Required, EmailAddress, Display(Name = "Email")]
-        public string? Email { get; set; }
-
-        [Required, MinLength(8), Display(Name = "Contraseña")]
-        public string? Password { get; set; }
-
-        [Required, Display(Name = "Rol")]
-        public string? Role { get; set; } = "Alumno"; // Alumno o Admin
+        public User(string id, string nombre, string apellido, string dni, string email)
+        {
+            this.id = id;
+            this.nombre = nombre;
+            this.apellido = apellido;
+            this.dni = dni;
+            this.email = email;
+        }
     }
 }
