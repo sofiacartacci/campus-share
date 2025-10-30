@@ -8,7 +8,7 @@ namespace CampusShare.Web.Controllers
 {
     public class AccountController : Controller
     {
-        private static List<User> _users = new List<User>();
+        private static readonly List<User> _users = new();
 
         public IActionResult Register() => View();
 
@@ -23,11 +23,13 @@ namespace CampusShare.Web.Controllers
 
             if (ModelState.IsValid)
             {
-                user.Id = _users.Count + 1;
+                user.Id = (_users.Count + 1).ToString();
+
                 _users.Add(user);
                 TempData["Success"] = "Registro exitoso. Ahora puedes iniciar sesión.";
                 return RedirectToAction("Login");
             }
+
             return View(user);
         }
 
@@ -37,17 +39,18 @@ namespace CampusShare.Web.Controllers
         public IActionResult Login(string email, string password)
         {
             var user = _users.FirstOrDefault(u => u.Email == email && u.Password == password);
+
             if (user != null)
             {
-                HttpContext.Session.SetString("UserName", user.Name);
-                HttpContext.Session.SetString("UserRole", user.Role);
+                HttpContext.Session.SetString("UserName", user.Name ?? string.Empty);
+                HttpContext.Session.SetString("UserRole", user.Role ?? string.Empty);
+
                 return RedirectToAction("Index", "Home");
             }
 
-            ViewBag.Error = "Credenciales incorrectas.";
+            ViewBag.Error = "Credenciales incorrectas";
             return View();
         }
-
         public IActionResult Logout()
         {
             HttpContext.Session.Clear();

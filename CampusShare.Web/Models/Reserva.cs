@@ -1,18 +1,39 @@
-using CampusShare.Web.Models;
+using System;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
-public class Reserva
+namespace CampusShare.Web.Models
 {
-    private string id;
-    private string fecInicio;
-    private string fecFin;
-    private EstadoReserva estadoReserva = EstadoReserva.Pendiente;
-    private Articulo articulo;
-
-    public Reserva(string id, string fecInicio, string fecFin, Articulo articulo)
+    public class Reserva
     {
-        this.id = id;
-        this.fecInicio = fecInicio;
-        this.fecFin = fecFin;
-        this.articulo = articulo;
+        [Key]
+        public string? Id { get; set; }
+
+        [Required]
+        public string? FecInicio { get; set; }
+
+        [Required]
+        public string? FecFin { get; set; }
+
+        public EstadoReserva EstadoReserva { get; set; } = EstadoReserva.Pendiente;
+
+        public Articulo? Articulo { get; set; }
+
+        [ForeignKey("Alumno")]
+        public string? AlumnoId { get; set; }
+
+        public Alumno? Alumno { get; set; }
+
+        public Reserva() { }
+
+        public Reserva(string id, string fecInicio, string fecFin, Articulo articulo, Alumno alumno)
+        {
+            Id = id;
+            FecInicio = fecInicio;
+            FecFin = fecFin;
+            Articulo = articulo;
+            Alumno = alumno;
+            AlumnoId = alumno.Id;
+        }
     }
 }

@@ -2,19 +2,21 @@ namespace CampusShare.Web.Models
 {
     public class User
     {
-        protected string id { get; set; }
-        protected string nombre { get; set; }
-        protected string apellido { get; set; }
-        protected string dni { get; set; }
-        protected string email { get; set; }
+        public string? Id { get; set; }
+        public string? Name { get; set; }
+        public string? Email { get; set; }
+        public string? Password { get; set; }
+        public string? Role { get; set; }
 
-        public User(string id, string nombre, string apellido, string dni, string email)
+        public User() { }
+
+        public User(string id, string name, string email, string password, string role)
         {
-            this.id = id;
-            this.nombre = nombre;
-            this.apellido = apellido;
-            this.dni = dni;
-            this.email = email;
+            Id = id;
+            Name = name;
+            Email = email;
+            Password = password;
+            Role = role;
         }
     }
 }

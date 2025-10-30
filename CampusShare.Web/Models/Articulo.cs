@@ -1,17 +1,22 @@
-public class Articulo
+namespace CampusShare.Web.Models
 {
-    private string id;
-    private string nombre;
-    private string descripcion;
-    private bool disponible;
-    private TipoArticulo tipoArticulo;
-
-    public Articulo(string id, string nombre, string descripcion, bool disponible, TipoArticulo tipoArticulo)
+    public class Articulo
     {
-        this.id = id;
-        this.nombre = nombre;
-        this.descripcion = descripcion;
-        this.disponible = disponible;
-        this.tipoArticulo = tipoArticulo;
+        public string Id { get; set; } = string.Empty;
+        public string Nombre { get; set; } = string.Empty;
+        public string Descripcion { get; set; } = string.Empty;
+        public bool Disponible { get; set; }
+        public TipoArticulo TipoArticulo { get; set; }
+
+        public Articulo() { }
+
+        public Articulo(string id, string nombre, string descripcion, bool disponible, TipoArticulo tipoArticulo)
+        {
+            Id = id;
+            Nombre = nombre;
+            Descripcion = descripcion;
+            Disponible = disponible;
+            TipoArticulo = tipoArticulo;
+        }
     }
 }
