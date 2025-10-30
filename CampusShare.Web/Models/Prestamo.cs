@@ -1,16 +1,26 @@
-public class Prestamo
-{
-    private string id;
-    private string fecInicio;
-    private string fecFin;
-    private EstadoPrestamo estadoPrestamo = EstadoPrestamo.VIGENTE;
-    private Articulo articulo;
+using System;
+using System.ComponentModel.DataAnnotations;
 
-    public Prestamo(string id, string fecInicio, string fecFin, Articulo articulo)
+namespace CampusShare.Web.Models
+{
+    public class Prestamo
     {
-        this.id = id;
-        this.fecInicio = fecInicio;
-        this.fecFin = fecFin;
-        this.articulo = articulo;
+        [Key]
+        public string? Id { get; set; }
+        public string? FecInicio { get; set; }
+        public string? FecFin { get; set; }
+        public EstadoPrestamo EstadoPrestamo { get; set; } = EstadoPrestamo.VIGENTE;
+
+        public Articulo? Articulo { get; set; }
+
+        public Prestamo() { }
+
+        public Prestamo(string id, string fecInicio, string fecFin, Articulo articulo)
+        {
+            Id = id;
+            FecInicio = fecInicio;
+            FecFin = fecFin;
+            Articulo = articulo;
+        }
     }
 }
