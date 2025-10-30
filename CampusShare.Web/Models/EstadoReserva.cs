@@ -1,10 +1,4 @@
-<<<<<<< HEAD
-public enum EstadoReserva
-{
-    VIGENTE,
-    CANCELADA,
-    VENCIDA
-=======
+
 namespace CampusShare.Web.Models
 {
     public enum EstadoReserva
@@ -16,5 +10,5 @@ namespace CampusShare.Web.Models
         Devuelta,
         Cancelada
     }
->>>>>>> e043d0e15ebed0e6cfeedfdb596138f97edc53dc
+
 }
