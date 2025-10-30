@@ -1,6 +1,12 @@
-public enum EstadoReserva
+namespace CampusShare.Web.Models
 {
-    VIGENTE,
-    CANCELADA,
-    VENCIDA
+    public enum EstadoReserva
+    {
+        Pendiente,
+        Aprobada,
+        Rechazada,
+        EnCurso,
+        Devuelta,
+        Cancelada
+    }
 }
