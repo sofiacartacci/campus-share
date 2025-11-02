@@ -15,7 +15,12 @@ namespace CampusShare.Web.Models
         [Required]
         public string? FecFin { get; set; }
 
+        public DateTime FechaSolicitud { get; set; } = DateTime.Now;
+
         public EstadoReserva EstadoReserva { get; set; } = EstadoReserva.Pendiente;
+
+        [StringLength(500)]
+        public string? MotivoRechazo { get; set; }
 
         public Articulo? Articulo { get; set; }
 
@@ -34,6 +39,7 @@ namespace CampusShare.Web.Models
             Articulo = articulo;
             Alumno = alumno;
             AlumnoId = alumno.Id;
+            FechaSolicitud = DateTime.Now;
         }
     }
 }
