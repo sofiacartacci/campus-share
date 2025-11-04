@@ -2,16 +2,16 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.EntityFrameworkCore;
 using CampusShare.Web.Models;
-using CampusShare.Web.Context; // ✅ cambio aquí
+using CampusShare.Web.Context;
 using System.Security.Claims;
 
 namespace CampusShare.Web.Controllers
 {
     public class ReservasController : Controller
     {
-        private readonly CampusShareDBContext _context; // ✅ cambio aquí
+        private readonly CampusShareDBContext _context;
 
-        public ReservasController(CampusShareDBContext context) // ✅ cambio aquí
+        public ReservasController(CampusShareDBContext context)
         {
             _context = context;
         }
@@ -59,7 +59,7 @@ namespace CampusShare.Web.Controllers
             // Verificar disponibilidad del artículo en las fechas solicitadas
             var conflicto = await _context.Reservas
     .AnyAsync(r => r.Articulo != null 
-                && reserva.Articulo != null   // ✅ agregado
+                && reserva.Articulo != null
                 && r.Articulo.Id == reserva.Articulo.Id
                 && r.EstadoReserva == EstadoReserva.Aprobada
                 && r.Id != reserva.Id

@@ -20,7 +20,6 @@ namespace CampusShare.Web.Models
         [EmailAddress]
         public string Email { get; set; } = string.Empty;
 
-        // ✅ Estas tres propiedades nuevas eliminan los errores:
         [Required]
         [DataType(DataType.Password)]
         public string Password { get; set; } = string.Empty;
