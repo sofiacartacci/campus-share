@@ -1,0 +1,57 @@
+## Archivos generados por compilación
+bin/
+obj/
+[Bb]uild/
+[Ll]og/
+[Dd]ebug/
+[Rr]elease/
+x64/
+x86/
+[Aa][Rr][Mm]/
+[Aa][Rr][Mm]64/
+*.dll
+*.exe
+*.pdb
+*.cache
+*.log
+
+## Archivos de usuario / IDE
+.vs/
+*.user
+*.suo
+*.userosscache
+*.userprefs
+
+## Configuración temporal
+*.tmp
+*.temp
+*.bak
+*.swp
+
+## Archivos de publicación
+*.Publish.xml
+*.publishsettings
+PublishProfiles/
+*.deploy.cmd
+*.deploy-readme.txt
+
+## Archivos de dependencias
+project.lock.json
+project.fragment.lock.json
+*.nuget.props
+*.nuget.targets
+
+## Archivos de sistema / OS
+Thumbs.db
+ehthumbs.db
+.DS_Store
+desktop.ini
+
+## Configuración local
+appsettings.Development.json
+secrets.json
+
+## Otros
+.idea/
+*.ncrunchsolution
+*.ncrunchproject

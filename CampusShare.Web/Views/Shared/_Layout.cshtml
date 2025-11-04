@@ -29,7 +29,8 @@
                         </a>
                     </li>
                     
-                    @if (User.Identity.IsAuthenticated)
+                   @if (User?.Identity?.IsAuthenticated == true)
+
                     {
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-controller="Articulos" asp-action="Index">
@@ -43,7 +44,7 @@
                             </a>
                         </li>
 
-                        @if (User.IsInRole("Administrador"))
+                        @if (User?.IsInRole("Administrador") == true)
                         {
                             <li class="nav-item dropdown">
                                 <a class="nav-link dropdown-toggle text-dark" href="#" id="adminDropdown" 
@@ -87,12 +88,13 @@
 
                 <!-- Botones de sesión -->
                 <ul class="navbar-nav">
-                    @if (User.Identity.IsAuthenticated)
+                    @if (User?.Identity?.IsAuthenticated == true)
                     {
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle text-dark" href="#" id="userDropdown" 
                                role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                <i class="bi bi-person-circle"></i> @User.Identity.Name
+                                <i class="bi bi-person-circle"></i> @(User?.Identity?.Name ?? "Usuario")
+
                             </a>
                             <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
                                 <li>
