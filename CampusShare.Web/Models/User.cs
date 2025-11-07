@@ -1,12 +1,10 @@
 using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 
 namespace CampusShare.Web.Models
 {
-    public abstract class User
+    public class User
     {
         [Key]
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
 
         [Required]
@@ -23,13 +21,9 @@ namespace CampusShare.Web.Models
         public string Email { get; set; } = string.Empty;
 
         [Required]
-        [DataType(DataType.Password)]
         public string Password { get; set; } = string.Empty;
 
-        [Required]
-        public required string Role { get; set; }
-
-        public string Name => $"{Nombre} {Apellido}";
+        public string Role { get; set; } = string.Empty;
 
         public User() { }
 

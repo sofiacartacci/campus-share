@@ -1,3 +1,5 @@
+using System;
+
 namespace CampusShare.Web.Models
 {
     public class Admin : User
@@ -5,11 +7,11 @@ namespace CampusShare.Web.Models
         public Admin() { }
 
         public Admin(string nombre, string apellido, string dni, string email)
-            : base(nombre, apellido, dni, email, role: typeof(Alumno).Name)
+            : base(nombre, apellido, dni, email, role: typeof(Admin).Name)
         {
         }
 
-        private void AlumnoReservar(Alumno alumno, string fecInicio, string fecFin, Articulo articulo)
+        private void AlumnoReservar(Alumno alumno, DateTime fecInicio, DateTime fecFin, Articulo articulo)
         {
             alumno.RecibirReserva(fecInicio, fecFin, articulo);
         }
@@ -28,6 +30,5 @@ namespace CampusShare.Web.Models
         {
             alumno.RecibirDevolucion(idPrestamo);
         }
-
     }
 }

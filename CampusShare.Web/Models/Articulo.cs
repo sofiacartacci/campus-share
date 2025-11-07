@@ -1,5 +1,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using Microsoft.Identity.Client;
+using Microsoft.Net.Http.Headers;
 
 namespace CampusShare.Web.Models
 {
@@ -11,8 +13,8 @@ namespace CampusShare.Web.Models
 
         public string Nombre { get; set; } = string.Empty;
         public string Descripcion { get; set; } = string.Empty;
-        public EstadoRP Estado { get; set; }
         public TipoArticulo TipoArticulo { get; set; }
+        public Boolean Disponible { get; set; }
 
         public Articulo() { }
 
@@ -20,8 +22,17 @@ namespace CampusShare.Web.Models
         {
             Nombre = nombre;
             Descripcion = descripcion;
-            Estado = EstadoRP.Disponible;
+            this.Disponible = true;
             TipoArticulo = tipoArticulo;
         }
+
+        private void SetDisponible()
+        {
+            if (this.Disponible == true)
+                this.Disponible = false;
+            else
+                this.Disponible = true;
+        }
+
     }
 }

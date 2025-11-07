@@ -2,7 +2,6 @@ using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-
 namespace CampusShare.Web.Models
 {
     public class Reserva
@@ -12,50 +11,52 @@ namespace CampusShare.Web.Models
         public int Id { get; set; }
 
         [Required]
-        public string? FecInicio { get; set; }
+        public DateTime FecInicio { get; set; }
 
         [Required]
-        public string? FecFin { get; set; }
+        public DateTime FecFin { get; set; }
 
         public DateTime FechaSolicitud { get; set; } = DateTime.Now;
 
-
+        [Required]
         public EstadoRP Estado { get; set; } = EstadoRP.Pendiente;
 
-        [StringLength(500)]
         public string? MotivoRechazo { get; set; }
 
-        public Articulo? Articulo { get; set; }
-
         [ForeignKey("Alumno")]
-        public string? AlumnoId { get; set; }
-
+        public int? AlumnoId { get; set; }
         public Alumno? Alumno { get; set; }
+
+        [ForeignKey("Articulo")]
+        public int? ArticuloId { get; set; }
+        public Articulo? Articulo { get; set; }
 
         public Reserva() { }
 
-        public Reserva(string fecInicio, string fecFin, Articulo articulo)
+        public Reserva(DateTime fecInicio, DateTime fecFin, int alumnoId, int articuloId)
         {
             FecInicio = fecInicio;
             FecFin = fecFin;
-            Articulo = articulo;
+            AlumnoId = alumnoId;
+            ArticuloId = articuloId;
             Estado = EstadoRP.Pendiente;
             FechaSolicitud = DateTime.Now;
         }
 
         internal void Cancelate()
         {
-            this.Estado = EstadoRP.Cancelada;
+            if (Estado == EstadoRP.Pendiente || Estado == EstadoRP.Aprobada)
+            {
+                Estado = EstadoRP.Cancelada;
+            }
         }
 
         internal void IrAPrestamo()
         {
-            this.Estado = EstadoRP.Realizada;
-        }
-
-        internal void Autorizarse()
-        {
-            this.Estado = EstadoRP.Vigente;
+            if (Estado == EstadoRP.Aprobada)
+            {
+                Estado = EstadoRP.Realizada;
+            }
         }
     }
 }

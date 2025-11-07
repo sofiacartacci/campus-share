@@ -7,6 +7,7 @@ namespace CampusShare.Web.Models
         Vigente = 2,
         Cancelada = 3,
         Realizada = 4,
-        Disponible = 5
+        Disponible = 5,
+        Rechazada = 6
     }
 }

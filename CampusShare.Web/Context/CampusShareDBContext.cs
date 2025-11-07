@@ -18,15 +18,29 @@ namespace CampusShare.Web.Context
         public DbSet<Articulo> Articulos { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
-{
-    modelBuilder.Entity<Reserva>()
-        .HasOne(r => r.Alumno)
-        .WithMany(a => a.Reservas)
-        .HasForeignKey(r => r.AlumnoId)
-        .OnDelete(DeleteBehavior.Cascade);
+        {
+            // Reserva -> Alumno
+            modelBuilder.Entity<Reserva>()
+                .HasOne(r => r.Alumno)
+                .WithMany(a => a.Reservas)
+                .HasForeignKey(r => r.AlumnoId)
+                .OnDelete(DeleteBehavior.Cascade);
 
-    base.OnModelCreating(modelBuilder);
-}
+            // Prestamo -> Alumno
+            modelBuilder.Entity<Prestamo>()
+                .HasOne(p => p.Alumno)
+                .WithMany(a => a.Prestamos)
+                .HasForeignKey(p => p.AlumnoId)
+                .OnDelete(DeleteBehavior.Cascade);
 
+            // Prestamo -> Articulo
+            modelBuilder.Entity<Prestamo>()
+                .HasOne(p => p.Articulo)
+                .WithMany()
+                .HasForeignKey("ArticuloId")
+                .OnDelete(DeleteBehavior.Restrict);
+
+            base.OnModelCreating(modelBuilder);
+        }
     }
 }

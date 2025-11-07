@@ -24,8 +24,11 @@ namespace CampusShare.Web.Migrations
 
             modelBuilder.Entity("CampusShare.Web.Models.Articulo", b =>
                 {
-                    b.Property<string>("Id")
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Descripcion")
                         .IsRequired()
@@ -48,23 +51,26 @@ namespace CampusShare.Web.Migrations
 
             modelBuilder.Entity("CampusShare.Web.Models.Prestamo", b =>
                 {
-                    b.Property<string>("Id")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("AlumnoId")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("ArticuloId")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<int>("EstadoPrestamo")
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    b.Property<string>("FecFin")
-                        .HasColumnType("nvarchar(max)");
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<string>("FecInicio")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int?>("AlumnoId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("ArticuloId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Estado")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("FecFin")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("FecInicio")
+                        .HasColumnType("datetime2");
 
                     b.HasKey("Id");
 
@@ -77,41 +83,36 @@ namespace CampusShare.Web.Migrations
 
             modelBuilder.Entity("CampusShare.Web.Models.Reserva", b =>
                 {
-                    b.Property<string>("Id")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("AlumnoId")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("AlumnoId1")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("ArticuloId")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<int>("EstadoReserva")
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    b.Property<string>("FecFin")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<string>("FecInicio")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int?>("AlumnoId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("ArticuloId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Estado")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("FecFin")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("FecInicio")
+                        .HasColumnType("datetime2");
 
                     b.Property<DateTime>("FechaSolicitud")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("MotivoRechazo")
-                        .HasMaxLength(500)
-                        .HasColumnType("nvarchar(500)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
                     b.HasIndex("AlumnoId");
-
-                    b.HasIndex("AlumnoId1");
 
                     b.HasIndex("ArticuloId");
 
@@ -120,8 +121,11 @@ namespace CampusShare.Web.Migrations
 
             modelBuilder.Entity("CampusShare.Web.Models.User", b =>
                 {
-                    b.Property<string>("Id")
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Apellido")
                         .IsRequired()
@@ -177,13 +181,17 @@ namespace CampusShare.Web.Migrations
 
             modelBuilder.Entity("CampusShare.Web.Models.Prestamo", b =>
                 {
-                    b.HasOne("CampusShare.Web.Models.Alumno", null)
-                        .WithMany("PrestamosHistorial")
-                        .HasForeignKey("AlumnoId");
+                    b.HasOne("CampusShare.Web.Models.Alumno", "Alumno")
+                        .WithMany("Prestamos")
+                        .HasForeignKey("AlumnoId")
+                        .OnDelete(DeleteBehavior.Cascade);
 
                     b.HasOne("CampusShare.Web.Models.Articulo", "Articulo")
                         .WithMany()
-                        .HasForeignKey("ArticuloId");
+                        .HasForeignKey("ArticuloId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.Navigation("Alumno");
 
                     b.Navigation("Articulo");
                 });
@@ -194,10 +202,6 @@ namespace CampusShare.Web.Migrations
                         .WithMany("Reservas")
                         .HasForeignKey("AlumnoId")
                         .OnDelete(DeleteBehavior.Cascade);
-
-                    b.HasOne("CampusShare.Web.Models.Alumno", null)
-                        .WithMany("ReservasHistorial")
-                        .HasForeignKey("AlumnoId1");
 
                     b.HasOne("CampusShare.Web.Models.Articulo", "Articulo")
                         .WithMany()
@@ -210,11 +214,9 @@ namespace CampusShare.Web.Migrations
 
             modelBuilder.Entity("CampusShare.Web.Models.Alumno", b =>
                 {
-                    b.Navigation("PrestamosHistorial");
+                    b.Navigation("Prestamos");
 
                     b.Navigation("Reservas");
-
-                    b.Navigation("ReservasHistorial");
                 });
 #pragma warning restore 612, 618
         }

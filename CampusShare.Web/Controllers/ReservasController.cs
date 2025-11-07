@@ -16,56 +16,44 @@ namespace CampusShare.Web.Controllers
             _context = context;
         }
 
-        // GET: Reservas/Pendientes (solo para administradores)
         [Authorize(Roles = "Administrador")]
         public async Task<IActionResult> Pendientes()
         {
             var reservasPendientes = await _context.Reservas
                 .Include(r => r.Articulo)
                 .Include(r => r.Alumno)
-                .Where(r => r.EstadoReserva == EstadoReserva.Pendiente)
+                .Where(r => r.Estado == EstadoRP.Pendiente)
                 .OrderBy(r => r.FechaSolicitud)
                 .ToListAsync();
 
             return View(reservasPendientes);
         }
 
-        // POST: Reservas/Aprobar/id
         [HttpPost]
         [Authorize(Roles = "Administrador")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Aprobar(string id)
+        public async Task<IActionResult> Aprobar(int id)
         {
-            if (string.IsNullOrEmpty(id))
-            {
-                return NotFound();
-            }
-
             var reserva = await _context.Reservas
                 .Include(r => r.Articulo)
                 .FirstOrDefaultAsync(r => r.Id == id);
 
             if (reserva == null)
-            {
                 return NotFound();
-            }
 
-            if (reserva.EstadoReserva != EstadoReserva.Pendiente)
+            if (reserva.Estado != EstadoRP.Pendiente)
             {
                 TempData["Error"] = "Solo se pueden aprobar reservas pendientes.";
                 return RedirectToAction(nameof(Pendientes));
             }
 
-            // Verificar disponibilidad del artículo en las fechas solicitadas
             var conflicto = await _context.Reservas
-    .AnyAsync(r => r.Articulo != null 
-                && reserva.Articulo != null
-                && r.Articulo.Id == reserva.Articulo.Id
-                && r.EstadoReserva == EstadoReserva.Aprobada
-                && r.Id != reserva.Id
-                && ((string.Compare(r.FecInicio, reserva.FecFin) <= 0 
-                    && string.Compare(r.FecFin, reserva.FecInicio) >= 0)));
-
+                .AnyAsync(r => r.Articulo != null
+                            && reserva.Articulo != null
+                            && r.Articulo.Id == reserva.Articulo.Id
+                            && r.Estado == EstadoRP.Aprobada
+                            && r.Id != reserva.Id
+                            && (r.FecInicio <= reserva.FecFin && r.FecFin >= reserva.FecInicio));
 
             if (conflicto)
             {
@@ -73,8 +61,8 @@ namespace CampusShare.Web.Controllers
                 return RedirectToAction(nameof(Pendientes));
             }
 
-            reserva.EstadoReserva = EstadoReserva.Aprobada;
-            
+            reserva.Estado = EstadoRP.Aprobada;
+
             try
             {
                 await _context.SaveChangesAsync();
@@ -88,25 +76,17 @@ namespace CampusShare.Web.Controllers
             return RedirectToAction(nameof(Pendientes));
         }
 
-        // POST: Reservas/Rechazar/id
         [HttpPost]
         [Authorize(Roles = "Administrador")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Rechazar(string id, string motivo)
+        public async Task<IActionResult> Rechazar(int id, string motivo)
         {
-            if (string.IsNullOrEmpty(id))
-            {
-                return NotFound();
-            }
-
             var reserva = await _context.Reservas.FindAsync(id);
 
             if (reserva == null)
-            {
                 return NotFound();
-            }
 
-            if (reserva.EstadoReserva != EstadoReserva.Pendiente)
+            if (reserva.Estado != EstadoRP.Pendiente)
             {
                 TempData["Error"] = "Solo se pueden rechazar reservas pendientes.";
                 return RedirectToAction(nameof(Pendientes));
@@ -118,9 +98,9 @@ namespace CampusShare.Web.Controllers
                 return RedirectToAction(nameof(Pendientes));
             }
 
-            reserva.EstadoReserva = EstadoReserva.Rechazada;
+            reserva.Estado = EstadoRP.Rechazada;
             reserva.MotivoRechazo = motivo;
-            
+
             try
             {
                 await _context.SaveChangesAsync();
@@ -134,43 +114,31 @@ namespace CampusShare.Web.Controllers
             return RedirectToAction(nameof(Pendientes));
         }
 
-        // POST: Reservas/Cancelar/id (Usuario cancela su propia reserva o Admin cancela cualquiera)
         [HttpPost]
         [Authorize]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Cancelar(string id)
+        public async Task<IActionResult> Cancelar(int id)
         {
-            if (string.IsNullOrEmpty(id))
-            {
-                return NotFound();
-            }
-
-            var usuarioId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var usuarioIdClaim = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            int.TryParse(usuarioIdClaim, out int usuarioId);
             var esAdmin = User.IsInRole("Administrador");
 
             var reserva = await _context.Reservas.FindAsync(id);
 
             if (reserva == null)
-            {
                 return NotFound();
-            }
 
-            // Verificar que el usuario sea el dueño de la reserva o sea admin
             if (reserva.AlumnoId != usuarioId && !esAdmin)
-            {
                 return Forbid();
-            }
 
-            // Solo se pueden cancelar reservas Pendientes o Aprobadas
-            if (reserva.EstadoReserva != EstadoReserva.Pendiente 
-                && reserva.EstadoReserva != EstadoReserva.Aprobada)
+            if (reserva.Estado != EstadoRP.Pendiente && reserva.Estado != EstadoRP.Aprobada)
             {
                 TempData["Error"] = "Esta reserva no puede ser cancelada.";
                 return esAdmin ? RedirectToAction(nameof(Pendientes)) : RedirectToAction(nameof(MisReservas));
             }
 
-            reserva.EstadoReserva = EstadoReserva.Cancelada;
-            
+            reserva.Estado = EstadoRP.Cancelada;
+
             try
             {
                 await _context.SaveChangesAsync();
@@ -184,11 +152,11 @@ namespace CampusShare.Web.Controllers
             return esAdmin ? RedirectToAction(nameof(Pendientes)) : RedirectToAction(nameof(MisReservas));
         }
 
-        // GET: Reservas/MisReservas (Para usuarios)
         [Authorize]
         public async Task<IActionResult> MisReservas()
         {
-            var usuarioId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var usuarioIdClaim = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            int.TryParse(usuarioIdClaim, out int usuarioId);
 
             var reservas = await _context.Reservas
                 .Include(r => r.Articulo)
@@ -199,14 +167,12 @@ namespace CampusShare.Web.Controllers
             return View(reservas);
         }
 
-        // GET: Reservas/Details/id
         [Authorize]
-        public async Task<IActionResult> Details(string id)
+        public async Task<IActionResult> Details(int id)
         {
-            if (string.IsNullOrEmpty(id))
-            {
-                return NotFound();
-            }
+            var usuarioIdClaim = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            int.TryParse(usuarioIdClaim, out int usuarioId);
+            var esAdmin = User.IsInRole("Administrador");
 
             var reserva = await _context.Reservas
                 .Include(r => r.Articulo)
@@ -214,18 +180,10 @@ namespace CampusShare.Web.Controllers
                 .FirstOrDefaultAsync(m => m.Id == id);
 
             if (reserva == null)
-            {
                 return NotFound();
-            }
-
-            // Verificar permisos
-            var usuarioId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            var esAdmin = User.IsInRole("Administrador");
 
             if (reserva.AlumnoId != usuarioId && !esAdmin)
-            {
                 return Forbid();
-            }
 
             return View(reserva);
         }
