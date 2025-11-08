@@ -11,24 +11,29 @@ namespace CampusShare.Web.Models
         {
         }
 
-        private void AlumnoReservar(Alumno alumno, DateTime fecInicio, DateTime fecFin, Articulo articulo)
+        public void AlumnoReservar(Alumno alumno, DateTime fecInicio, DateTime fecFin, Articulo articulo)
         {
             alumno.RecibirReserva(fecInicio, fecFin, articulo);
         }
 
-        private void AlumnoCancelarReserva(Alumno alumno, int idReserva)
+        public void AlumnoCancelarReserva(Alumno alumno, int idReserva)
         {
             alumno.RecibirCancelacion(idReserva);
         }
 
-        private void AlumnoTomarPrestamo(Alumno alumno, int idReserva)
+        public void AlumnoTomarPrestamo(Alumno alumno, int idReserva)
         {
             alumno.RecibirEjecucion(idReserva);
         }
 
-        private void AlumnoDevolverPrestamo(Alumno alumno, int idPrestamo)
+        public void AlumnoDevolverPrestamo(Alumno alumno, int idPrestamo)
         {
             alumno.RecibirDevolucion(idPrestamo);
+        }
+
+        public void AlumnoAprobarReserva(Alumno alumno, int idReserva)
+        {
+            alumno.RecibirAprobacion(idReserva);
         }
     }
 }

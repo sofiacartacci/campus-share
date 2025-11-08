@@ -39,6 +39,29 @@ namespace CampusShare.Web.Models
                 .FirstOrDefault(r => r.Id == idReserva && r.AlumnoId == this.Id);
         }
 
+
+        private void AprobarReserva(int idReserva)
+        {
+            using var context = new CampusShareDBContextFactory().CreateDbContext();
+            var reserva = context.Reservas.FirstOrDefault(r => r.Id == idReserva);
+
+            if (reserva == null)
+            {
+                Console.WriteLine("La reserva buscada no existe");
+                return;
+            }
+
+            if (reserva.Estado != EstadoRP.Pendiente)
+            {
+                Console.WriteLine("Solo se pueden aprobar reservas pendientes");
+                return;
+            }
+
+            reserva.Estado = EstadoRP.Aprobada;
+            context.SaveChanges();
+            Console.WriteLine($"Se ha aprobado la reserva {reserva}");
+        }
+
         private void CancelarReserva(int idReserva)
         {
             using var context = new CampusShareDBContextFactory().CreateDbContext();
@@ -96,6 +119,8 @@ namespace CampusShare.Web.Models
         }
 
         public void RecibirCancelacion(int idReserva) => CancelarReserva(idReserva);
+
+        public void RecibirAprobacion(int idReserva) => AprobarReserva(idReserva);
 
         public void RecibirEjecucion(int idReserva) => TomarPrestamo(idReserva);
 

@@ -35,11 +35,14 @@ namespace CampusShare.Web.Controllers
         public async Task<IActionResult> Aprobar(int id)
         {
             var reserva = await _context.Reservas
-                .Include(r => r.Articulo)
+                .Include(r => r.Alumno)
                 .FirstOrDefaultAsync(r => r.Id == id);
 
             if (reserva == null)
-                return NotFound();
+            {
+                TempData["Error"] = "Reserva no encontrada.";
+                return RedirectToAction(nameof(Pendientes));
+            }
 
             if (reserva.Estado != EstadoRP.Pendiente)
             {
@@ -47,26 +50,11 @@ namespace CampusShare.Web.Controllers
                 return RedirectToAction(nameof(Pendientes));
             }
 
-            var conflicto = await _context.Reservas
-                .AnyAsync(r => r.Articulo != null
-                            && reserva.Articulo != null
-                            && r.Articulo.Id == reserva.Articulo.Id
-                            && r.Estado == EstadoRP.Aprobada
-                            && r.Id != reserva.Id
-                            && (r.FecInicio <= reserva.FecFin && r.FecFin >= reserva.FecInicio));
-
-            if (conflicto)
-            {
-                TempData["Error"] = "El artículo ya está reservado en esas fechas.";
-                return RedirectToAction(nameof(Pendientes));
-            }
-
-            reserva.Estado = EstadoRP.Aprobada;
-
             try
             {
-                await _context.SaveChangesAsync();
-                TempData["Success"] = $"Reserva #{reserva.Id} aprobada correctamente.";
+                var admin = new Admin();
+                admin.AlumnoAprobarReserva(reserva.Alumno!, id);
+                TempData["Success"] = $"Reserva #{id} aprobada correctamente.";
             }
             catch (Exception ex)
             {
@@ -282,6 +270,4 @@ namespace CampusShare.Web.Controllers
             return RedirectToAction("Index", "Home");
         }
     }
-
-
 }

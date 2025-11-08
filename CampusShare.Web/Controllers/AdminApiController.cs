@@ -38,6 +38,24 @@ namespace CampusShare.Web.Controllers
             return Ok(reservas);
         }
 
+        [HttpGet("reservas-pendientes/{alumnoId}")]
+        public async Task<IActionResult> GetReservasPendientes(int alumnoId)
+        {
+            var reservas = await _context.Reservas
+                .Include(r => r.Articulo)
+                .Where(r => r.AlumnoId == alumnoId && r.Estado == EstadoRP.Pendiente)
+                .Select(r => new
+                {
+                    id = r.Id,
+                    articulo = r.Articulo != null ? r.Articulo.Nombre : "Sin artículo",
+                    fechaInicio = r.FecInicio.ToString("dd/MM/yyyy"),
+                    fechaFin = r.FecFin.ToString("dd/MM/yyyy")
+                })
+                .ToListAsync();
+
+            return Ok(reservas);
+        }
+
         [HttpGet("reservas-aprobadas/{alumnoId}")]
         public async Task<IActionResult> GetReservasAprobadas(int alumnoId)
         {
@@ -107,7 +125,9 @@ namespace CampusShare.Web.Controllers
         [HttpPost("cancelar-reserva")]
         public async Task<IActionResult> CancelarReserva([FromBody] CancelarReservaRequest request)
         {
-            var reserva = await _context.Reservas.FindAsync(request.ReservaId);
+            var reserva = await _context.Reservas
+                .Include(r => r.Articulo)
+                .FirstOrDefaultAsync(r => r.Id == request.ReservaId);
 
             if (reserva == null)
                 return NotFound("Reserva no encontrada");
@@ -116,9 +136,36 @@ namespace CampusShare.Web.Controllers
                 return BadRequest("Solo se pueden cancelar reservas pendientes o aprobadas");
 
             reserva.Estado = EstadoRP.Cancelada;
+
+            if (reserva.Articulo != null)
+                reserva.Articulo.Disponible = true;
+
             await _context.SaveChangesAsync();
 
             return Ok(new { message = "Reserva cancelada exitosamente" });
+        }
+
+        [HttpPost("aprobar-reserva")]
+        public async Task<IActionResult> AprobarReserva([FromBody] AprobarReservaRequest request)
+        {
+            var reserva = await _context.Reservas
+                .Include(r => r.Articulo)
+                .FirstOrDefaultAsync(r => r.Id == request.ReservaId);
+
+            if (reserva == null)
+                return NotFound("Reserva no encontrada");
+
+            if (reserva.Estado != EstadoRP.Pendiente)
+                return BadRequest("Solo se pueden aprobar reservas pendientes");
+
+            reserva.Estado = EstadoRP.Aprobada;
+
+            if (reserva.Articulo != null)
+                reserva.Articulo.Disponible = false;
+
+            await _context.SaveChangesAsync();
+
+            return Ok(new { message = "Reserva aprobada exitosamente" });
         }
 
         [HttpPost("tomar-prestamo")]
@@ -187,6 +234,11 @@ namespace CampusShare.Web.Controllers
     }
 
     public class CancelarReservaRequest
+    {
+        public int ReservaId { get; set; }
+    }
+
+    public class AprobarReservaRequest
     {
         public int ReservaId { get; set; }
     }

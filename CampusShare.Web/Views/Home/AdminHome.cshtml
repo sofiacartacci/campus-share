@@ -17,91 +17,36 @@
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
 
-        .welcome-section {
+        .welcome-section,
+        .filter-section,
+        .actions-container {
             background: white;
-            padding: 30px;
             border-radius: 15px;
             box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            padding: 25px 30px;
             margin-bottom: 30px;
         }
 
         .welcome-section h2 {
             color: #dc3545;
             font-weight: 700;
-            margin-bottom: 10px;
-        }
-
-        .filter-section {
-            background: white;
-            padding: 25px;
-            border-radius: 15px;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-            margin-bottom: 30px;
-        }
-
-        .filter-section label {
-            font-weight: 600;
-            color: #495057;
-            margin-bottom: 10px;
-            display: block;
-        }
-
-        .form-select {
-            border: 2px solid #e9ecef;
-            border-radius: 8px;
-            padding: 12px;
-            font-size: 1.1rem;
-        }
-
-        .form-select:focus {
-            border-color: #dc3545;
-            box-shadow: 0 0 0 0.2rem rgba(220, 53, 69, 0.15);
-        }
-
-        .actions-container {
-            background: white;
-            padding: 30px;
-            border-radius: 15px;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-        }
-
-        .actions-container h4 {
-            color: #495057;
-            font-weight: 600;
-            margin-bottom: 20px;
-            padding-bottom: 15px;
-            border-bottom: 3px solid #dc3545;
-        }
-
-        .action-form {
-            background: #f8f9fa;
-            border: 2px solid #e9ecef;
-            border-radius: 10px;
-            padding: 20px;
-            margin-bottom: 20px;
-        }
-
-        .action-form h5 {
-            color: #495057;
-            font-weight: 600;
-            margin-bottom: 20px;
         }
 
         .btn-action {
             border-radius: 8px;
-            padding: 10px 30px;
+            padding: 10px 25px;
             font-weight: 600;
-            transition: all 0.3s;
+            transition: 0.3s;
             border: none;
         }
 
-        .btn-crear-reserva {
-            background: #28a745;
-            color: white;
+        .btn-aprobar-reserva {
+            background: #ffc107;
+            color: #000;
         }
 
-        .btn-crear-reserva:hover {
-            background: #218838;
+        .btn-aprobar-reserva:hover {
+            background: #e0a800;
             transform: translateY(-2px);
         }
 
@@ -114,26 +59,6 @@
             background: #c82333;
             transform: translateY(-2px);
         }
-
-        .btn-tomar-prestamo {
-            background: #007bff;
-            color: white;
-        }
-
-        .btn-tomar-prestamo:hover {
-            background: #0056b3;
-            transform: translateY(-2px);
-        }
-
-        .btn-devolver-prestamo {
-            background: #17a2b8;
-            color: white;
-        }
-
-        .btn-devolver-prestamo:hover {
-            background: #138496;
-            transform: translateY(-2px);
-        }
     </style>
 </head>
 
@@ -141,16 +66,14 @@
     <nav class="navbar navbar-expand-lg navbar-dark mb-4"
         style="background: linear-gradient(135deg, #dc3545 0%, #c82333 100%); box-shadow: 0 2px 10px rgba(0,0,0,0.1);">
         <div class="container-fluid">
-            <a class="navbar-brand" href="@Url.Action("Index", "Home")"
-                style="color: white; font-weight: 700; font-size: 1.5rem;">
+            <a class="navbar-brand" href="@Url.Action("Index", "Home")" style="color: white; font-weight: 700;">
                 <i class="bi bi-shield-check me-2"></i>CampusShare Admin
             </a>
             <div class="ms-auto d-flex align-items-center">
-                <span class="navbar-text me-3" style="color: white;">
-                    <i class="bi bi-person-circle me-2"></i>
-                    <strong>@Model.NombreAdmin</strong>
+                <span class="navbar-text me-3 text-white">
+                    <i class="bi bi-person-circle me-2"></i><strong>@Model.NombreAdmin</strong>
                 </span>
-                <form asp-controller="Account" asp-action="Logout" method="post" style="display: inline;">
+                <form asp-controller="Account" asp-action="Logout" method="post">
                     @Html.AntiForgeryToken()
                     <button type="submit" class="btn btn-outline-light btn-sm">
                         <i class="bi bi-box-arrow-right me-1"></i>Cerrar Sesión
@@ -167,9 +90,7 @@
         </div>
 
         <div class="filter-section">
-            <label for="alumnoSelect">
-                <i class="bi bi-person-fill me-2"></i>Seleccionar Alumno
-            </label>
+            <label for="alumnoSelect"><i class="bi bi-person-fill me-2"></i>Seleccionar Alumno</label>
             <select class="form-select" id="alumnoSelect">
                 <option value="" selected disabled>Seleccione un alumno...</option>
                 @foreach (var alumno in Model.Alumnos)
@@ -180,13 +101,11 @@
         </div>
 
         <div class="filter-section">
-            <label for="accionSelect">
-                <i class="bi bi-list-task me-2"></i>Acción a Realizar
-            </label>
+            <label for="accionSelect"><i class="bi bi-list-task me-2"></i>Acción a Realizar</label>
             <select class="form-select" id="accionSelect" disabled>
                 <option value="" selected disabled>Primero seleccione un alumno...</option>
+                <option value="aprobar-reserva">Aprobar o Cancelar Reserva del Alumno</option>
                 <option value="crear-reserva">Crear Reserva para el Alumno</option>
-                <option value="cancelar-reserva">Cancelar Reserva del Alumno</option>
                 <option value="tomar-prestamo">Hacer que el Alumno Tome un Préstamo</option>
                 <option value="devolver-prestamo">Hacer que el Alumno Devuelva un Préstamo</option>
             </select>
@@ -200,90 +119,25 @@
                 <p class="mt-3">Seleccione un alumno y una acción para continuar</p>
             </div>
 
-            <div id="crearReservaForm" class="action-form" style="display: none;">
-                <h5><i class="bi bi-calendar-plus me-2"></i>Crear Reserva para el Alumno</h5>
-                <form id="formCrearReserva">
-                    <input type="hidden" id="crearAlumnoId" name="alumnoId" />
-
+            <div id="aprobarReservaForm" class="action-form" style="display: none;">
+                <h5><i class="bi bi-check2-circle me-2"></i>Aprobar o Cancelar Reserva del Alumno</h5>
+                <form id="formAprobarReserva" class="d-flex flex-column gap-3">
+                    <input type="hidden" id="aprobarAlumnoId" name="alumnoId" />
                     <div class="mb-3">
-                        <label class="form-label">Artículo *</label>
-                        <select class="form-select" name="articuloId" required>
-                            <option value="" selected disabled>Seleccione un artículo...</option>
-                            @foreach (var articulo in Model.Articulos.Where(a => a.Disponible))
-                            {
-                                <option value="@articulo.Id">@articulo.Nombre - @articulo.TipoArticulo</option>
-                            }
-                        </select>
-                    </div>
-
-                    <div class="row mb-3">
-                        <div class="col-md-6">
-                            <label class="form-label">Fecha Inicio *</label>
-                            <input type="date" class="form-control" name="fechaInicio" required />
-                        </div>
-                        <div class="col-md-6">
-                            <label class="form-label">Fecha Fin *</label>
-                            <input type="date" class="form-control" name="fechaFin" required />
-                        </div>
-                    </div>
-
-                    <button type="submit" class="btn btn-action btn-crear-reserva">
-                        <i class="bi bi-check-circle me-2"></i>Crear Reserva
-                    </button>
-                </form>
-            </div>
-
-            <div id="cancelarReservaForm" class="action-form" style="display: none;">
-                <h5><i class="bi bi-x-circle me-2"></i>Cancelar Reserva del Alumno</h5>
-                <form id="formCancelarReserva">
-                    <input type="hidden" id="cancelarAlumnoId" name="alumnoId" />
-
-                    <div class="mb-3">
-                        <label class="form-label">Reserva a Cancelar *</label>
-                        <select class="form-select" name="reservaId" id="selectReservasCancelar" required>
+                        <label class="form-label">Reserva Pendiente *</label>
+                        <select class="form-select" name="reservaId" id="selectReservasPendientes" required>
                             <option value="" selected disabled>Cargando reservas...</option>
                         </select>
                     </div>
-
-                    <button type="submit" class="btn btn-action btn-cancelar-reserva">
-                        <i class="bi bi-x-circle me-2"></i>Cancelar Reserva
-                    </button>
-                </form>
-            </div>
-
-            <div id="tomarPrestamoForm" class="action-form" style="display: none;">
-                <h5><i class="bi bi-box-arrow-down me-2"></i>Tomar Préstamo desde Reserva</h5>
-                <form id="formTomarPrestamo">
-                    <input type="hidden" id="tomarAlumnoId" name="alumnoId" />
-
-                    <div class="mb-3">
-                        <label class="form-label">Reserva Aprobada *</label>
-                        <select class="form-select" name="reservaId" id="selectReservasAprobadas" required>
-                            <option value="" selected disabled>Cargando reservas...</option>
-                        </select>
+                    <div class="d-flex gap-2">
+                        <button type="submit" class="btn btn-action btn-aprobar-reserva d-flex align-items-center">
+                            <i class="bi bi-check-circle me-2"></i>Aprobar Reserva
+                        </button>
+                        <button type="button" id="btnCancelarReservaDesdeAprobar"
+                            class="btn btn-action btn-cancelar-reserva d-flex align-items-center">
+                            <i class="bi bi-x-circle me-2"></i>Cancelar Reserva
+                        </button>
                     </div>
-
-                    <button type="submit" class="btn btn-action btn-tomar-prestamo">
-                        <i class="bi bi-check-circle me-2"></i>Tomar Préstamo
-                    </button>
-                </form>
-            </div>
-
-            <div id="devolverPrestamoForm" class="action-form" style="display: none;">
-                <h5><i class="bi bi-box-arrow-up me-2"></i>Devolver Préstamo del Alumno</h5>
-                <form id="formDevolverPrestamo">
-                    <input type="hidden" id="devolverAlumnoId" name="alumnoId" />
-
-                    <div class="mb-3">
-                        <label class="form-label">Préstamo Vigente *</label>
-                        <select class="form-select" name="prestamoId" id="selectPrestamosVigentes" required>
-                            <option value="" selected disabled>Cargando préstamos...</option>
-                        </select>
-                    </div>
-
-                    <button type="submit" class="btn btn-action btn-devolver-prestamo">
-                        <i class="bi bi-check-circle me-2"></i>Devolver Préstamo
-                    </button>
                 </form>
             </div>
         </div>
@@ -291,218 +145,92 @@
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
-        const alumnoSelect = document.getElementById('alumnoSelect');
-        const accionSelect = document.getElementById('accionSelect');
-        const noActionSelected = document.getElementById('noActionSelected');
-        const crearReservaForm = document.getElementById('crearReservaForm');
-        const cancelarReservaForm = document.getElementById('cancelarReservaForm');
-        const tomarPrestamoForm = document.getElementById('tomarPrestamoForm');
-        const devolverPrestamoForm = document.getElementById('devolverPrestamoForm');
+        document.addEventListener('DOMContentLoaded', () => {
+            console.log("✅ DOM cargado correctamente");
 
-        alumnoSelect.addEventListener('change', function () {
-            if (this.value) {
-                accionSelect.disabled = false;
-                accionSelect.value = '';
+            const alumnoSelect = document.getElementById('alumnoSelect');
+            const accionSelect = document.getElementById('accionSelect');
+            const aprobarReservaForm = document.getElementById('aprobarReservaForm');
+            const noActionSelected = document.getElementById('noActionSelected');
+
+            alumnoSelect.addEventListener('change', function () {
+                if (this.value) {
+                    accionSelect.disabled = false;
+                    accionSelect.value = '';
+                    hideAllForms();
+                }
+            });
+
+            accionSelect.addEventListener('change', async function () {
+                const alumnoId = alumnoSelect.value;
                 hideAllForms();
-            }
-        });
-
-        accionSelect.addEventListener('change', async function () {
-            const alumnoId = alumnoSelect.value;
-            hideAllForms();
-
-            switch (this.value) {
-                case 'crear-reserva':
-                    document.getElementById('crearAlumnoId').value = alumnoId;
-                    crearReservaForm.style.display = 'block';
-                    break;
-                case 'cancelar-reserva':
-                    document.getElementById('cancelarAlumnoId').value = alumnoId;
-                    await cargarReservasCancelables(alumnoId);
-                    cancelarReservaForm.style.display = 'block';
-                    break;
-                case 'tomar-prestamo':
-                    document.getElementById('tomarAlumnoId').value = alumnoId;
-                    await cargarReservasAprobadas(alumnoId);
-                    tomarPrestamoForm.style.display = 'block';
-                    break;
-                case 'devolver-prestamo':
-                    document.getElementById('devolverAlumnoId').value = alumnoId;
-                    await cargarPrestamosVigentes(alumnoId);
-                    devolverPrestamoForm.style.display = 'block';
-                    break;
-            }
-        });
-
-        function hideAllForms() {
-            noActionSelected.style.display = 'none';
-            crearReservaForm.style.display = 'none';
-            cancelarReservaForm.style.display = 'none';
-            tomarPrestamoForm.style.display = 'none';
-            devolverPrestamoForm.style.display = 'none';
-        }
-
-        async function cargarReservasCancelables(alumnoId) {
-            const select = document.getElementById('selectReservasCancelar');
-            select.innerHTML = '<option value="">Cargando...</option>';
-
-            try {
-                const response = await fetch(`/api/admin/reservas-cancelables/${alumnoId}`);
-                const reservas = await response.json();
-
-                if (reservas.length === 0) {
-                    select.innerHTML = '<option value="">No hay reservas cancelables</option>';
-                } else {
-                    select.innerHTML = reservas.map(r =>
-                        `<option value="${r.id}">${r.articulo} - ${r.fechaInicio} a ${r.fechaFin} (${r.estado})</option>`
-                    ).join('');
+                if (this.value === 'aprobar-reserva') {
+                    await cargarReservasPendientes(alumnoId);
+                    aprobarReservaForm.style.display = 'block';
                 }
-            } catch (error) {
-                select.innerHTML = '<option value="">Error al cargar reservas</option>';
+            });
+
+            function hideAllForms() {
+                noActionSelected.style.display = 'none';
+                aprobarReservaForm.style.display = 'none';
             }
-        }
 
-        async function cargarReservasAprobadas(alumnoId) {
-            const select = document.getElementById('selectReservasAprobadas');
-            select.innerHTML = '<option value="">Cargando...</option>';
-
-            try {
-                const response = await fetch(`/api/admin/reservas-aprobadas/${alumnoId}`);
-                const reservas = await response.json();
-
-                if (reservas.length === 0) {
-                    select.innerHTML = '<option value="">No hay reservas aprobadas</option>';
-                } else {
-                    select.innerHTML = reservas.map(r =>
-                        `<option value="${r.id}">${r.articulo} - ${r.fechaInicio} a ${r.fechaFin}</option>`
-                    ).join('');
+            async function cargarReservasPendientes(alumnoId) {
+                const select = document.getElementById('selectReservasPendientes');
+                select.innerHTML = '<option value="">Cargando...</option>';
+                try {
+                    const response = await fetch(`/api/admin/reservas-pendientes/${alumnoId}`);
+                    const reservas = await response.json();
+                    if (reservas.length === 0)
+                        select.innerHTML = '<option value="">No hay reservas pendientes</option>';
+                    else
+                        select.innerHTML = reservas.map(r =>
+                            `<option value="${r.id}">${r.articulo} - ${r.fechaInicio} a ${r.fechaFin}</option>`
+                        ).join('');
+                } catch (error) {
+                    select.innerHTML = '<option value="">Error al cargar reservas</option>';
+                    console.error(error);
                 }
-            } catch (error) {
-                select.innerHTML = '<option value="">Error al cargar reservas</option>';
             }
-        }
 
-        async function cargarPrestamosVigentes(alumnoId) {
-            const select = document.getElementById('selectPrestamosVigentes');
-            select.innerHTML = '<option value="">Cargando...</option>';
-
-            try {
-                const response = await fetch(`/api/admin/prestamos-vigentes/${alumnoId}`);
-                const prestamos = await response.json();
-
-                if (prestamos.length === 0) {
-                    select.innerHTML = '<option value="">No hay préstamos vigentes</option>';
-                } else {
-                    select.innerHTML = prestamos.map(p =>
-                        `<option value="${p.id}">${p.articulo} - ${p.fechaInicio} a ${p.fechaFin}</option>`
-                    ).join('');
+            document.getElementById('formAprobarReserva').addEventListener('submit', async function (e) {
+                e.preventDefault();
+                const formData = new FormData(this);
+                const reservaId = parseInt(formData.get('reservaId'));
+                try {
+                    const response = await fetch('/api/admin/aprobar-reserva', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ reservaId })
+                    });
+                    if (response.ok) {
+                        alert('✅ Reserva aprobada exitosamente');
+                        location.reload();
+                    } else alert('❌ Error al aprobar la reserva');
+                } catch (error) {
+                    alert('⚠️ Error: ' + error.message);
                 }
-            } catch (error) {
-                select.innerHTML = '<option value="">Error al cargar préstamos</option>';
-            }
-        }
+            });
 
-        document.getElementById('formCrearReserva').addEventListener('submit', async function (e) {
-            e.preventDefault();
-            const formData = new FormData(this);
-
-            try {
-                const response = await fetch('/api/admin/crear-reserva', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
-                        alumnoId: parseInt(formData.get('alumnoId')),
-                        articuloId: parseInt(formData.get('articuloId')),
-                        fechaInicio: formData.get('fechaInicio'),
-                        fechaFin: formData.get('fechaFin')
-                    })
-                });
-
-                if (response.ok) {
-                    alert('Reserva creada exitosamente');
-                    location.reload();
-                } else {
-                    alert('Error al crear la reserva');
+            document.getElementById('btnCancelarReservaDesdeAprobar').addEventListener('click', async function () {
+                const select = document.getElementById('selectReservasPendientes');
+                const reservaId = parseInt(select.value);
+                if (!reservaId) return alert('⚠️ Seleccione una reserva antes de cancelar.');
+                if (!confirm('¿Está seguro que desea cancelar esta reserva?')) return;
+                try {
+                    const response = await fetch('/api/admin/cancelar-reserva', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ reservaId })
+                    });
+                    if (response.ok) {
+                        alert('🗑️ Reserva cancelada exitosamente');
+                        location.reload();
+                    } else alert('❌ Error al cancelar la reserva');
+                } catch (error) {
+                    alert('⚠️ Error: ' + error.message);
                 }
-            } catch (error) {
-                alert('Error: ' + error.message);
-            }
-        });
-
-        document.getElementById('formCancelarReserva').addEventListener('submit', async function (e) {
-            e.preventDefault();
-            const formData = new FormData(this);
-
-            if (!confirm('¿Está seguro de cancelar esta reserva?')) return;
-
-            try {
-                const response = await fetch('/api/admin/cancelar-reserva', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
-                        reservaId: parseInt(formData.get('reservaId'))
-                    })
-                });
-
-                if (response.ok) {
-                    alert('Reserva cancelada exitosamente');
-                    location.reload();
-                } else {
-                    alert('Error al cancelar la reserva');
-                }
-            } catch (error) {
-                alert('Error: ' + error.message);
-            }
-        });
-
-        document.getElementById('formTomarPrestamo').addEventListener('submit', async function (e) {
-            e.preventDefault();
-            const formData = new FormData(this);
-
-            try {
-                const response = await fetch('/api/admin/tomar-prestamo', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
-                        reservaId: parseInt(formData.get('reservaId'))
-                    })
-                });
-
-                if (response.ok) {
-                    alert('Préstamo tomado exitosamente');
-                    location.reload();
-                } else {
-                    alert('Error al tomar el préstamo');
-                }
-            } catch (error) {
-                alert('Error: ' + error.message);
-            }
-        });
-
-        document.getElementById('formDevolverPrestamo').addEventListener('submit', async function (e) {
-            e.preventDefault();
-            const formData = new FormData(this);
-
-            if (!confirm('¿Confirma la devolución de este préstamo?')) return;
-
-            try {
-                const response = await fetch('/api/admin/devolver-prestamo', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
-                        prestamoId: parseInt(formData.get('prestamoId'))
-                    })
-                });
-
-                if (response.ok) {
-                    alert('Préstamo devuelto exitosamente');
-                    location.reload();
-                } else {
-                    alert('Error al devolver el préstamo');
-                }
-            } catch (error) {
-                alert('Error: ' + error.message);
-            }
+            });
         });
     </script>
 </body>
