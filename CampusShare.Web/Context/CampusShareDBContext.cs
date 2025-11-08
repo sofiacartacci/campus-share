@@ -19,21 +19,22 @@ namespace CampusShare.Web.Context
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            // Reserva -> Alumno
+            modelBuilder.Entity<Articulo>()
+                .Property(a => a.TipoArticulo)
+                .HasConversion<string>();
+
             modelBuilder.Entity<Reserva>()
                 .HasOne(r => r.Alumno)
                 .WithMany(a => a.Reservas)
                 .HasForeignKey(r => r.AlumnoId)
                 .OnDelete(DeleteBehavior.Cascade);
 
-            // Prestamo -> Alumno
             modelBuilder.Entity<Prestamo>()
                 .HasOne(p => p.Alumno)
                 .WithMany(a => a.Prestamos)
                 .HasForeignKey(p => p.AlumnoId)
                 .OnDelete(DeleteBehavior.Cascade);
 
-            // Prestamo -> Articulo
             modelBuilder.Entity<Prestamo>()
                 .HasOne(p => p.Articulo)
                 .WithMany()
