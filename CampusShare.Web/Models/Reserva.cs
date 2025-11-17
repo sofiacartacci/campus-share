@@ -15,8 +15,18 @@ namespace CampusShare.Web.Models
         [Required]
         public string? FecFin { get; set; }
 
+<<<<<<< HEAD
         public EstadoReserva EstadoReserva { get; set; } = EstadoReserva.Pendiente;
 
+=======
+        public DateTime FechaSolicitud { get; set; } = DateTime.Now;
+
+        public EstadoReserva EstadoReserva { get; set; } = EstadoReserva.Pendiente;
+
+        [StringLength(500)]
+        public string? MotivoRechazo { get; set; }
+
+>>>>>>> f6a8f063785a5cd1b3266daee39b6ab879b8e059
         public Articulo? Articulo { get; set; }
 
         [ForeignKey("Alumno")]
@@ -34,6 +44,10 @@ namespace CampusShare.Web.Models
             Articulo = articulo;
             Alumno = alumno;
             AlumnoId = alumno.Id;
+<<<<<<< HEAD
+=======
+            FechaSolicitud = DateTime.Now;
+>>>>>>> f6a8f063785a5cd1b3266daee39b6ab879b8e059
         }
     }
 }
