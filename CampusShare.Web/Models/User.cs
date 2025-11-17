@@ -34,12 +34,6 @@ namespace CampusShare.Web.Models
             Dni = dni;
             Email = email;
             Role = role;
-=======
-            Nombre = nombre;
-            Apellido = apellido;
-            Dni = dni;
-            Email = email;
->>>>>>> f6a8f063785a5cd1b3266daee39b6ab879b8e059
         }
     }
 }
