@@ -8,7 +8,11 @@ html {
   }
 }
 
-.btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
+.btn:focus,
+.btn:active:focus,
+.btn-link.nav-link:focus,
+.form-control:focus,
+.form-check-input:focus {
   box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
 }
 
@@ -19,4 +23,30 @@ html {
 
 body {
   margin-bottom: 60px;
+}
+
+.table-sm td,
+.table-sm th {
+  vertical-align: middle;
+}
+
+.row {
+  gap: 1rem;
+}
+
+.col-md-5 {
+  max-height: 70vh;
+  overflow-y: auto;
+}
+
+.col-md-7 form {
+  background-color: #f9f9f9;
+  border-radius: 8px;
+  padding: 1rem;
+  box-shadow: 0 0 6px rgba(0, 0, 0, 0.05);
+}
+
+h4 {
+  margin-bottom: 1rem;
+  color: #333;
 }

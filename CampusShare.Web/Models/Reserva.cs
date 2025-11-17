@@ -7,47 +7,56 @@ namespace CampusShare.Web.Models
     public class Reserva
     {
         [Key]
-        public string? Id { get; set; }
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        public int Id { get; set; }
 
         [Required]
-        public string? FecInicio { get; set; }
+        public DateTime FecInicio { get; set; }
 
         [Required]
-        public string? FecFin { get; set; }
+        public DateTime FecFin { get; set; }
 
-<<<<<<< HEAD
-        public EstadoReserva EstadoReserva { get; set; } = EstadoReserva.Pendiente;
-
-=======
         public DateTime FechaSolicitud { get; set; } = DateTime.Now;
 
-        public EstadoReserva EstadoReserva { get; set; } = EstadoReserva.Pendiente;
+        [Required]
+        public EstadoRP Estado { get; set; } = EstadoRP.Pendiente;
 
-        [StringLength(500)]
         public string? MotivoRechazo { get; set; }
 
->>>>>>> f6a8f063785a5cd1b3266daee39b6ab879b8e059
-        public Articulo? Articulo { get; set; }
-
         [ForeignKey("Alumno")]
-        public string? AlumnoId { get; set; }
-
+        public int? AlumnoId { get; set; }
         public Alumno? Alumno { get; set; }
+
+        [ForeignKey("Articulo")]
+        public int? ArticuloId { get; set; }
+        public Articulo? Articulo { get; set; }
 
         public Reserva() { }
 
-        public Reserva(string id, string fecInicio, string fecFin, Articulo articulo, Alumno alumno)
+        public Reserva(DateTime fecInicio, DateTime fecFin, int alumnoId, int articuloId)
         {
-            Id = id;
             FecInicio = fecInicio;
             FecFin = fecFin;
-            Articulo = articulo;
-            Alumno = alumno;
-            AlumnoId = alumno.Id;
-<<<<<<< HEAD
-=======
+            AlumnoId = alumnoId;
+            ArticuloId = articuloId;
+            Estado = EstadoRP.Pendiente;
             FechaSolicitud = DateTime.Now;
->>>>>>> f6a8f063785a5cd1b3266daee39b6ab879b8e059
+        }
+
+        internal void Cancelate()
+        {
+            if (Estado == EstadoRP.Pendiente || Estado == EstadoRP.Aprobada)
+            {
+                Estado = EstadoRP.Cancelada;
+            }
+        }
+
+        internal void IrAPrestamo()
+        {
+            if (Estado == EstadoRP.Aprobada)
+            {
+                Estado = EstadoRP.Realizada;
+            }
         }
     }
 }

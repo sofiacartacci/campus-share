@@ -1,0 +1,101 @@
+@model CampusShare.Web.Models.Articulo
+@{
+    ViewData["Title"] = "Gestión de Artículos";
+    var articulos = ViewData["Articulos"] as List<CampusShare.Web.Models.Articulo>;
+    var selectedId = ViewData["SelectedId"] as int?;
+}
+
+<div class="container-fluid">
+    <div class="row" style="min-height: 80vh;">
+        <!-- COLUMNA IZQUIERDA: Lista de artículos -->
+        <div class="col-md-6 border-end pe-4">
+            <h4 class="mb-3">Artículos</h4>
+
+            <div class="table-responsive" style="max-height: 60vh; overflow-y: auto;">
+                <table class="table table-sm table-hover">
+                    <thead class="sticky-top bg-white">
+                        <tr>
+                            <th>Nombre</th>
+                            <th>Tipo</th>
+                            <th>Disponible</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var a in articulos ?? new List<CampusShare.Web.Models.Articulo>())
+                        {
+                            <tr class="@(a.Id == selectedId ? "table-primary" : "")">
+                                <td>@a.Nombre</td>
+                                <td>@a.TipoArticulo</td>
+                                <td>@(a.Disponible ? "Sí" : "No")</td>
+                                <td class="text-end">
+                                    <a asp-action="Manage" asp-route-id="@a.Id" class="btn btn-sm btn-outline-primary">
+                                        <i class="bi bi-pencil"></i>
+                                    </a>
+                                    <form asp-action="Delete" method="post" class="d-inline"
+                                        onsubmit="return confirm('¿Seguro que desea eliminar este artículo?');">
+                                        <input type="hidden" name="id" value="@a.Id" />
+                                        <button type="submit" class="btn btn-sm btn-outline-danger">
+                                            <i class="bi bi-trash"></i>
+                                        </button>
+                                    </form>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+
+            <a asp-action="Manage" class="btn btn-success w-100 mt-3">
+                <i class="bi bi-plus-circle"></i> Nuevo Artículo
+            </a>
+        </div>
+
+        <!-- COLUMNA DERECHA: Formulario ABM -->
+        <div class="col-md-6 ps-4">
+            <h4 class="mb-3">@(Model.Id == 0 ? "Nuevo Artículo" : "Editar Artículo")</h4>
+
+            <form asp-action="@(Model.Id == 0 ? "Create" : "Edit")" method="post">
+                @if (Model.Id != 0)
+                {
+                    <input type="hidden" asp-for="Id" />
+                }
+
+                <div class="mb-3">
+                    <label asp-for="Nombre" class="form-label">Nombre</label>
+                    <input asp-for="Nombre" class="form-control" />
+                    <span asp-validation-for="Nombre" class="text-danger"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="Descripcion" class="form-label">Descripción</label>
+                    <textarea asp-for="Descripcion" class="form-control" rows="4"></textarea>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="TipoArticulo" class="form-label">TipoArticulo</label>
+                    <select asp-for="TipoArticulo" class="form-select">
+                        <option value="">Seleccione tipo...</option>
+                        @foreach (var tipo in Enum.GetValues(typeof(CampusShare.Web.Models.TipoArticulo)))
+                        {
+                            var tipoNombre = Enum.GetName(typeof(CampusShare.Web.Models.TipoArticulo), tipo);
+                            <option value="@tipoNombre" selected="@(Model.TipoArticulo.Equals(tipo))">
+                                @tipoNombre
+                            </option>
+                        }
+                    </select>
+                </div>
+
+                <div class="form-check mb-4">
+                    <input asp-for="Disponible" class="form-check-input" />
+                    <label asp-for="Disponible" class="form-check-label">Disponible</label>
+                </div>
+
+                <div class="d-flex justify-content-end gap-2">
+                    <a asp-action="Manage" class="btn btn-secondary">Cancelar</a>
+                    <button type="submit" class="btn btn-primary">Guardar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

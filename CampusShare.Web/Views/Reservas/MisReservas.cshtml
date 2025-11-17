@@ -58,65 +58,62 @@
                             <td>@reserva.FecInicio</td>
                             <td>@reserva.FecFin</td>
                             <td>
-                                @switch (reserva.EstadoReserva)
+                                @switch (reserva.Estado)
                                 {
-                                    case CampusShare.Web.Models.EstadoReserva.Pendiente:
+                                    case CampusShare.Web.Models.EstadoRP.Pendiente:
                                         <span class="badge bg-warning text-dark">
                                             <i class="bi bi-clock"></i> Pendiente
                                         </span>
                                         break;
-                                    case CampusShare.Web.Models.EstadoReserva.Aprobada:
+                                    case CampusShare.Web.Models.EstadoRP.Aprobada:
                                         <span class="badge bg-success">
                                             <i class="bi bi-check-circle"></i> Aprobada
                                         </span>
                                         break;
-                                    case CampusShare.Web.Models.EstadoReserva.Rechazada:
-                                        <span class="badge bg-danger" 
-                                              data-bs-toggle="tooltip" 
-                                              data-bs-placement="top"
-                                              title="@reserva.MotivoRechazo">
+                                    case CampusShare.Web.Models.EstadoRP.Rechazada:
+                                        <span class="badge bg-danger" data-bs-toggle="tooltip" data-bs-placement="top"
+                                            title="@reserva.MotivoRechazo">
                                             <i class="bi bi-x-circle"></i> Rechazada
                                         </span>
                                         break;
-                                    case CampusShare.Web.Models.EstadoReserva.Cancelada:
+                                    case CampusShare.Web.Models.EstadoRP.Cancelada:
                                         <span class="badge bg-secondary">
                                             <i class="bi bi-ban"></i> Cancelada
                                         </span>
                                         break;
-                                    case CampusShare.Web.Models.EstadoReserva.Completada:
+                                    case CampusShare.Web.Models.EstadoRP.Realizada:
                                         <span class="badge bg-info">
-                                            <i class="bi bi-check-all"></i> Completada
+                                            <i class="bi bi-check-all"></i> Realizada
                                         </span>
                                         break;
                                 }
                             </td>
                             <td>
-                                @if (reserva.EstadoReserva == CampusShare.Web.Models.EstadoReserva.Pendiente 
-                                     || reserva.EstadoReserva == CampusShare.Web.Models.EstadoReserva.Aprobada)
+                                @if (reserva.Estado == CampusShare.Web.Models.EstadoRP.Pendiente
+                                                        || reserva.Estado == CampusShare.Web.Models.EstadoRP.Aprobada)
                                 {
                                     <form asp-action="Cancelar" asp-route-id="@reserva.Id" method="post" class="d-inline">
                                         @Html.AntiForgeryToken()
                                         <button type="submit" class="btn btn-sm btn-outline-danger"
-                                                onclick="return confirm('¿Está seguro de que desea cancelar esta reserva?')">
+                                            onclick="return confirm('¿Está seguro de que desea cancelar esta reserva?')">
                                             <i class="bi bi-x-circle"></i> Cancelar
                                         </button>
                                     </form>
                                 }
-                                @if (reserva.EstadoReserva == CampusShare.Web.Models.EstadoReserva.Rechazada)
+                                @if (reserva.Estado == CampusShare.Web.Models.EstadoRP.Rechazada)
                                 {
-                                    <button type="button" class="btn btn-sm btn-outline-info"
-                                            data-bs-toggle="modal"
-                                            data-bs-target="#motivoModal@(reserva.Id)">
+                                    <button type="button" class="btn btn-sm btn-outline-info" data-bs-toggle="modal"
+                                        data-bs-target="#motivoModal@(reserva.Id)">
                                         <i class="bi bi-info-circle"></i> Ver Motivo
                                     </button>
 
-                                    <!-- Modal para ver motivo de rechazo -->
                                     <div class="modal fade" id="motivoModal@(reserva.Id)" tabindex="-1">
                                         <div class="modal-dialog">
                                             <div class="modal-content">
                                                 <div class="modal-header bg-danger text-white">
                                                     <h5 class="modal-title">Motivo del Rechazo</h5>
-                                                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                                                    <button type="button" class="btn-close btn-close-white"
+                                                        data-bs-dismiss="modal"></button>
                                                 </div>
                                                 <div class="modal-body">
                                                     <p><strong>Reserva ID:</strong> @reserva.Id</p>
@@ -126,7 +123,8 @@
                                                     </div>
                                                 </div>
                                                 <div class="modal-footer">
-                                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                                                    <button type="button" class="btn btn-secondary"
+                                                        data-bs-dismiss="modal">Cerrar</button>
                                                 </div>
                                             </div>
                                         </div>
@@ -143,7 +141,6 @@
 
 @section Scripts {
     <script>
-        // Inicializar tooltips de Bootstrap
         var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
         var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
             return new bootstrap.Tooltip(tooltipTriggerEl)

@@ -1,11 +1,13 @@
 namespace CampusShare.Web.Models
 {
-    public enum EstadoReserva
+    public enum EstadoRP
     {
         Pendiente = 0,
         Aprobada = 1,
-        Rechazada = 2,
+        Vigente = 2,
         Cancelada = 3,
-        Completada = 4  
+        Realizada = 4,
+        Disponible = 5,
+        Rechazada = 6
     }
 }

@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore.Migrations;
+﻿using System;
+using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
@@ -14,11 +15,12 @@ namespace CampusShare.Web.Migrations
                 name: "Articulos",
                 columns: table => new
                 {
-                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     Nombre = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Descripcion = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Disponible = table.Column<bool>(type: "bit", nullable: false),
-                    TipoArticulo = table.Column<int>(type: "int", nullable: false)
+                    TipoArticulo = table.Column<int>(type: "int", nullable: false),
+                    Disponible = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -29,11 +31,14 @@ namespace CampusShare.Web.Migrations
                 name: "Users",
                 columns: table => new
                 {
-                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Email = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Password = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Role = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Nombre = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Apellido = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Dni = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Email = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Password = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Role = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Discriminator = table.Column<string>(type: "nvarchar(8)", maxLength: 8, nullable: false)
                 },
                 constraints: table =>
@@ -45,12 +50,13 @@ namespace CampusShare.Web.Migrations
                 name: "Prestamos",
                 columns: table => new
                 {
-                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    FecInicio = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    FecFin = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    EstadoPrestamo = table.Column<int>(type: "int", nullable: false),
-                    ArticuloId = table.Column<string>(type: "nvarchar(450)", nullable: true),
-                    AlumnoId = table.Column<string>(type: "nvarchar(450)", nullable: true)
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    FecInicio = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    FecFin = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    Estado = table.Column<int>(type: "int", nullable: false),
+                    ArticuloId = table.Column<int>(type: "int", nullable: true),
+                    AlumnoId = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -59,25 +65,29 @@ namespace CampusShare.Web.Migrations
                         name: "FK_Prestamos_Articulos_ArticuloId",
                         column: x => x.ArticuloId,
                         principalTable: "Articulos",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_Prestamos_Users_AlumnoId",
                         column: x => x.AlumnoId,
                         principalTable: "Users",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
                 name: "Reservas",
                 columns: table => new
                 {
-                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    FecInicio = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    FecFin = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    EstadoReserva = table.Column<int>(type: "int", nullable: false),
-                    ArticuloId = table.Column<string>(type: "nvarchar(450)", nullable: true),
-                    AlumnoId = table.Column<string>(type: "nvarchar(450)", nullable: true),
-                    AlumnoId1 = table.Column<string>(type: "nvarchar(450)", nullable: true)
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    FecInicio = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    FecFin = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    FechaSolicitud = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    Estado = table.Column<int>(type: "int", nullable: false),
+                    MotivoRechazo = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    AlumnoId = table.Column<int>(type: "int", nullable: true),
+                    ArticuloId = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -93,11 +103,6 @@ namespace CampusShare.Web.Migrations
                         principalTable: "Users",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_Reservas_Users_AlumnoId1",
-                        column: x => x.AlumnoId1,
-                        principalTable: "Users",
-                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateIndex(
@@ -114,11 +119,6 @@ namespace CampusShare.Web.Migrations
                 name: "IX_Reservas_AlumnoId",
                 table: "Reservas",
                 column: "AlumnoId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Reservas_AlumnoId1",
-                table: "Reservas",
-                column: "AlumnoId1");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Reservas_ArticuloId",
