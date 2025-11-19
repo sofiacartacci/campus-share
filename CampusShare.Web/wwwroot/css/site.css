@@ -548,7 +548,7 @@ main, .page-content {
 /* FOOTER para que no aparezca una banda blanca cortando la foto  */
 footer {
     position: absolute;
-    bottom: 10px;
+    bottom: -84px;
     width: 100%;
     text-align: center;
     background: transparent !important;
