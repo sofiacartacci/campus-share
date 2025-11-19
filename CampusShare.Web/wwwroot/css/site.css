@@ -1,52 +1,821 @@
-html {
-  font-size: 14px;
-}
-
-@media (min-width: 768px) {
-  html {
-    font-size: 16px;
-  }
-}
-
-.btn:focus,
-.btn:active:focus,
-.btn-link.nav-link:focus,
-.form-control:focus,
-.form-check-input:focus {
-  box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
-}
-
-html {
-  position: relative;
-  min-height: 100%;
-}
-
+/* ============================================================
+  FONDO GENERAL
+   ============================================================ */
 body {
-  margin-bottom: 60px;
+    background: url('/img/simbolos-de-flecha-de-colores-telefono-movil-y-pluma-sobre-fondo-azul.jpg') 
+                no-repeat center center fixed;
+    background-size: cover;
+    margin: 0;
 }
 
-.table-sm td,
-.table-sm th {
-  vertical-align: middle;
+
+
+/* ============================================================
+   LOGIN
+   ============================================================ */
+
+.login-container {
+    max-width: 420px;
+    margin: 80px auto 40px auto;
+    padding: 40px 45px;
+    background: #ffffff;
+    border-radius: 12px;
+    border: 1px solid #e1e5ee;
+    box-shadow: 0 6px 25px rgba(0, 0, 0, 0.08);
 }
 
-.row {
-  gap: 1rem;
+.login-title {
+    text-align: center;
+    font-size: 26px;
+    font-weight: 600;
+    color: #233044;
+    margin-bottom: 25px;
 }
 
-.col-md-5 {
-  max-height: 70vh;
-  overflow-y: auto;
+.form-control {
+    border-radius: 8px !important;
+    border: 1px solid #c9d1e3;
+    padding: 10px 12px;
+    font-size: 15px;
 }
 
-.col-md-7 form {
-  background-color: #f9f9f9;
-  border-radius: 8px;
-  padding: 1rem;
-  box-shadow: 0 0 6px rgba(0, 0, 0, 0.05);
+.form-control:focus {
+    border-color: #2f6fed;
+    box-shadow: 0 0 4px rgba(47, 111, 237, 0.4);
 }
 
-h4 {
-  margin-bottom: 1rem;
-  color: #333;
+.btn-login {
+    width: 100%;
+    padding: 12px;
+    font-size: 17px;
+    border-radius: 8px;
+    background-color: #2f6fed;
+    border: none;
+    font-weight: 500;
+    color: white;
 }
+
+.btn-login:hover {
+    background-color: #255bc4;
+}
+
+.login-footer-text {
+    text-align: center;
+    font-size: 14px;
+    color: #55657a;
+}
+
+.login-footer-text a {
+    color: #2f6fed;
+}
+
+
+
+/* ============================================================
+   NAVBAR
+   ============================================================ */
+
+.main-navbar {
+    background-color: #ffffff !important;
+    border-bottom: 1px solid #e5e7eb;
+    padding: 0.7rem 1rem;
+}
+
+.main-navbar .navbar-brand {
+    font-weight: 700;
+    color: #1f2937;
+    font-size: 1.2rem;
+}
+
+.main-navbar .navbar-brand .logo-icon {
+    color: #2563eb;
+    font-size: 1.4rem;
+}
+
+.main-navbar .nav-link {
+    color: #374151 !important;
+    font-weight: 500;
+    margin-right: 10px;
+}
+
+.main-navbar .nav-link:hover,
+.main-navbar .nav-link.active {
+    color: #2563eb !important;
+}
+
+.user-nav {
+    font-weight: 600;
+}
+
+
+
+/* ============================================================
+   FOOTER
+   ============================================================ */
+
+.main-footer {
+    background-color: #ffffff;
+    border-top: 1px solid #e5e7eb;
+    padding: 12px 0;
+    margin-top: 61px;
+    box-shadow: 0 -2px 6px rgba(0,0,0,0.05);
+}
+
+.footer-text {
+    color: #4b5563;
+    font-size: 0.9rem;
+}
+
+.footer-link {
+    color: #2563eb;
+    font-weight: 500;
+}
+
+
+
+/* ============================================================
+   TARJETAS / COMPONENTES GENERALES
+   ============================================================ */
+
+.dashboard-card,
+.welcome-section,
+.filter-section,
+.items-container {
+    background: rgba(255, 255, 255, 0.55);
+    backdrop-filter: blur(12px);
+    border-radius: 20px;
+    padding: 25px 28px;
+    border: 1px solid rgba(255, 255, 255, 0.4);
+    box-shadow:
+        0 4px 10px rgba(0,0,0,0.05),
+        0 1px 3px rgba(0,0,0,0.05);
+    margin-bottom: 25px;
+}
+
+.separator-line {
+    height: 3px;
+    background: linear-gradient(90deg, #2563eb, #3b82f6);
+    border-radius: 4px;
+    margin: 12px 0 22px 0;
+}
+
+.empty-state-icon {
+    opacity: 0.35;
+}
+
+
+
+/* ============================================================
+   TIPOGRAFIA DE TITULOS
+   ============================================================ */
+
+.welcome-section h2 {
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: #2563eb;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 8px;
+}
+
+.section-title,
+.filter-section label,
+.items-container h4 {
+    font-size: 1.4rem !important;
+    font-weight: 600;
+    color: #2563eb;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.items-container h4 {
+    border-bottom: 3px solid #2563eb;
+    padding-bottom: 8px;
+    margin-bottom: 12px;
+}
+
+
+
+/* ============================================================
+   HOME ALUMNO — COMPONENTES
+   ============================================================ */
+
+/* Subtexto debajo del Bienvenido */
+.welcome-section p {
+    font-size: 1.05rem;
+    color: #4b5563;
+    margin: 0;
+}
+
+/* Select */
+.form-select {
+    border: 1px solid #d3d3f3;
+    border-radius: 10px;
+    padding: 10px 12px;
+    background: rgba(255,255,255,0.85);
+}
+
+.form-select:focus {
+    border-color: #2563eb;
+    box-shadow: 0 0 0 0.15rem rgba(37, 99, 235, 0.25);
+}
+
+/* Cards de items */
+.item-card {
+    border-radius: 14px;
+    padding: 18px 20px;
+    background: rgba(255,255,255,0.8);
+    border: 1px solid rgba(223, 227, 250, 0.9);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.03);
+    transition: 0.25s;
+}
+
+.item-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 18px rgba(37, 99, 235, 0.18);
+}
+
+.item-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.item-title {
+    font-weight: 600;
+    font-size: 1.05rem;
+    color: #2c3e50;
+}
+
+/* Estados */
+.badge-estado {
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-size: 0.85rem;
+    font-weight: 600;
+}
+
+.badge-pendiente { background: #ffc107; color: #000; }
+.badge-aprobada { background: #28a745; color: #fff; }
+.badge-vigente  { background: #17a2b8; color: #fff; }
+.badge-cancelada,
+.badge-realizada { background: #6c757d; color: #fff; }
+.badge-rechazada { background: #dc3545; color: #fff; }
+
+
+
+/* ============================================================
+   BOTONES
+   ============================================================ */
+
+.btn-action {
+    border-radius: 8px;
+    padding: 8px 18px;
+    font-weight: 600;
+    border: none;
+    transition: 0.3s;
+}
+
+.main-action-btn,
+.btn-crear {
+    background: linear-gradient(135deg, #2563eb 0%, #3b82f6 100%);
+    border-radius: 14px;
+    padding: 12px 26px;
+    color: white !important;
+    font-weight: 600;
+    margin-bottom: 20px;
+}
+
+.main-action-btn:hover,
+.btn-crear:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(37, 99, 235, 0.35);
+}
+
+/* Botones secundarios */
+.btn-editar   { background: #17a2b8; }
+.btn-tomar    { background: #28a745; }
+.btn-devolver { background: #007bff; }
+.btn-cancelar { background: #dc3545; }
+
+.btn-editar:hover   { background: #138496; transform: translateY(-2px); }
+.btn-tomar:hover    { background: #218838; transform: translateY(-2px); }
+.btn-devolver:hover { background: #0056b3; transform: translateY(-2px); }
+.btn-cancelar:hover { background: #c82333; transform: translateY(-2px); }
+
+
+
+/* ============================================================
+   ADMIN
+   ============================================================ */
+
+.admin-card {
+    background: #ffffff;
+    border-radius: 18px;
+    padding: 22px 26px;
+    box-shadow: 0 10px 30px rgba(15, 23, 42, 0.06);
+    border: 1px solid #edf2ff;
+}
+
+.admin-section-title {
+    font-size: 1.15rem;
+    font-weight: 700;
+    color: #1f2937;
+}
+
+/* CONTENEDOR DE MIS RESERVAS  */
+.reservas-container {
+    background: rgba(255, 255, 255, 0.94);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    border-radius: 22px;
+    padding: 40px 35px 35px 35px;
+    max-width: 1100px;
+    margin: 80px auto 40px auto;   /* SUBE LA CARD Y LA CENTRA */
+    box-shadow: 0 25px 60px rgba(0, 0, 0, 0.25);
+    border: 1px solid rgba(255, 255, 255, 0.75);
+}
+
+
+/* Titulo */
+.reservas-container > h2 {
+    font-weight: 700;
+    color: transparent;
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    -webkit-background-clip: text;
+    background-clip: text;
+    margin-bottom: 20px;
+}
+
+/* Alerts */
+.reservas-container .alert {
+    border-radius: 12px;
+    border: none;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+}
+
+.reservas-container .alert-info {
+    background: rgba(102, 126, 234, 0.08);
+    color: #39426f;
+}
+
+/* Boton crear nueva reserva */
+.reservas-container .btn-primary {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    border: none;
+    border-radius: 10px;
+    padding-inline: 20px;
+}
+
+/* TABLA */
+.reservas-container .table {
+    margin-top: 10px;
+    border-radius: 12px;
+    overflow: hidden;
+    background: #ffffff;
+}
+
+.reservas-container .table thead {
+    background: linear-gradient(135deg, #f3f4ff, #e7e9ff);
+}
+
+.reservas-container .table thead th {
+    border-bottom: none;
+    color: #4a4f73;
+    font-weight: 600;
+}
+
+.reservas-container .table-hover tbody tr:hover {
+    background-color: rgba(102, 126, 234, 0.06);
+}
+
+/* Badges */
+.badge.bg-warning {
+    background-color: #ffe58f !important;
+    color: #664d03 !important;
+}
+
+.badge.bg-success {
+    background-color: #52c41a !important;
+}
+
+.badge.bg-danger {
+    background-color: #ff4d4f !important;
+}
+
+.badge.bg-secondary {
+    background-color: #6c757d !important;
+}
+
+.badge.bg-info {
+    background-color: #36cfc9 !important;
+}
+
+/* Botones de acciones */
+.reservas-container .btn-outline-danger,
+.reservas-container .btn-outline-info {
+    border-radius: 999px;
+    padding-inline: 14px;
+    font-size: 0.8rem;
+}
+
+/*  FONDO GENERAL (misma foto que en Nueva Reserva) */
+body {
+    margin: 0;
+    min-height: 100vh;
+    background: url('/img/simbolos-de-flecha-de-colores-telefono-movil-y-pluma-sobre-fondo-azul.jpg')
+                no-repeat center center fixed;
+    background-size: cover;
+}
+
+/* Navbar glass y sin corte raro */
+.navbar {
+    background: rgba(255, 255, 255, 0.65) !important;
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.4);
+    box-shadow: 0 4px 18px rgba(0,0,0,0.15);
+}
+
+/* Que el header no deje espacio raro debajo del navbar */
+body > header {
+    margin-bottom: 0 !important;
+}
+
+/* Un poco de respiro para todo el contenido principal */
+main, .page-content {
+    padding-top: 40px;
+    padding-bottom: 40px;
+}
+
+/* CARD / PANEL DE "MIS RESERVAS" */
+.reservas-container {
+    background: rgba(255, 255, 255, 0.94);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    border-radius: 18px;
+    padding: 30px 28px 26px 28px;
+    margin-top: 40px !important;   /* lo despega del navbar */
+    margin-bottom: 28px;
+    box-shadow: 0 18px 45px rgba(0, 0, 0, 0.25);
+    border: 1px solid rgba(255, 255, 255, 0.75);
+}
+
+/* Titulo "Mis Reservas" con degrade violeta */
+.reservas-container > h2 {
+    font-weight: 700;
+    color: transparent;
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    -webkit-background-clip: text;
+    background-clip: text;
+    margin-bottom: 20px;
+}
+
+/* Alerts dentro de la card */
+.reservas-container .alert {
+    border-radius: 12px;
+    border: none;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+}
+
+.reservas-container .alert-info {
+    background: rgba(102, 126, 234, 0.08);
+    color: #39426f;
+}
+
+/* Boton "Crear Nueva Reserva" que combine con el resto */
+.reservas-container .btn-primary {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    border: none;
+    border-radius: 10px;
+    padding-inline: 20px;
+}
+
+/* TABLA */
+.reservas-container .table {
+    margin-top: 10px;
+    border-radius: 12px;
+    overflow: hidden;
+    background: #ffffff;
+}
+
+.reservas-container .table thead {
+    background: linear-gradient(135deg, #f3f4ff, #e7e9ff);
+}
+
+.reservas-container .table thead th {
+    border-bottom: none;
+    color: #4a4f73;
+    font-weight: 600;
+}
+
+.reservas-container .table-hover tbody tr:hover {
+    background-color: rgba(102, 126, 234, 0.06);
+}
+
+/* Badges de estado */
+.badge.bg-warning {
+    background-color: #ffe58f !important;
+    color: #664d03 !important;
+}
+
+.badge.bg-success {
+    background-color: #52c41a !important;
+}
+
+.badge.bg-danger {
+    background-color: #ff4d4f !important;
+}
+
+.badge.bg-secondary {
+    background-color: #6c757d !important;
+}
+
+.badge.bg-info {
+    background-color: #36cfc9 !important;
+}
+
+/* Botones de acciones en la tabla */
+.reservas-container .btn-outline-danger,
+.reservas-container .btn-outline-info {
+    border-radius: 999px;
+    padding-inline: 14px;
+    font-size: 0.8rem;
+}
+
+/* FOOTER para que no aparezca una banda blanca cortando la foto  */
+footer {
+    position: absolute;
+    bottom: 10px;
+    width: 100%;
+    text-align: center;
+    background: transparent !important;
+    border: none !important;
+    padding: 0;
+    margin-top: 0;
+}
+
+/* SOLO PARA NUEVA RESERVA */
+.nueva-reserva-wrapper {
+    display: flex;
+    justify-content: center;
+    padding-top: 20px;
+    padding-bottom: 80px;
+}
+
+.nueva-reserva-card {
+    background: #ffffff;
+    border-radius: 22px;
+    padding: 40px;
+    width: 100%;
+    max-width: 850px;
+    box-shadow: 0 25px 60px rgba(0, 0, 0, 0.25);
+    border: 1px solid rgba(255, 255, 255, 0.8);
+}
+
+/* Header */
+.nueva-reserva-header {
+    text-align: center;
+    margin-bottom: 32px;
+}
+
+.nueva-reserva-header h2 {
+    color: #667eea;
+    font-weight: 700;
+    margin-bottom: 10px;
+}
+
+/* Caja de aviso */
+.nueva-reserva-info {
+    background: #f3f4ff;
+    padding: 15px;
+    border-radius: 10px;
+    border-left: 5px solid #667eea;
+    margin-bottom: 28px;
+}
+
+/* Iconos de labels */
+.icon-label {
+    display: inline-flex;
+    gap: 8px;
+    align-items: center;
+}
+
+/* Inputs */
+.nueva-reserva-card .form-control,
+.nueva-reserva-card .form-select {
+    border: 2px solid #e9ecef;
+    border-radius: 10px;
+    padding: 12px;
+}
+
+.nueva-reserva-card .form-control:focus,
+.nueva-reserva-card .form-select:focus {
+    border-color: #667eea;
+    box-shadow: 0 0 0 0.2rem rgba(102, 126, 234, 0.2);
+}
+
+/* Botones */
+.nueva-reserva-card .btn-primary {
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    border: none;
+    padding: 12px;
+    font-weight: 600;
+    border-radius: 10px;
+}
+
+.nueva-reserva-card .btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 25px rgba(102, 126, 234, 0.4);
+}
+
+.nueva-reserva-card .btn-secondary {
+    background: #6c757d;
+    border: none;
+    padding: 12px;
+    border-radius: 10px;
+}
+
+/* EDITAR RESERVA (solo esta seccion) */
+
+.editar-reserva-wrapper {
+    display: flex;
+    justify-content: center;
+    padding-top: 40px;
+    padding-bottom: 60px;
+}
+
+.editar-reserva-card {
+    background: #ffffff;
+    border-radius: 22px;
+    box-shadow: 0 25px 60px rgba(0, 0, 0, 0.25);
+    padding: 40px;
+    max-width: 800px;
+    width: 100%;
+    border: 1px solid rgba(255, 255, 255, 0.85);
+}
+
+/* Header */
+.editar-reserva-header {
+    text-align: center;
+    margin-bottom: 28px;
+}
+
+.editar-reserva-header h2 {
+    color: #667eea;
+    font-weight: 700;
+    margin-bottom: 8px;
+}
+
+/* Caja de aviso */
+.info-box-warning {
+    background: #fff8e1;
+    border-left: 4px solid #ffc107;
+    padding: 12px 14px;
+    border-radius: 10px;
+    margin-bottom: 24px;
+    font-size: 0.95rem;
+}
+
+/* Icon + label */
+.icon-label {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+}
+
+/* Inputs */
+.editar-reserva-card .form-label {
+    font-weight: 600;
+    color: #495057;
+    margin-bottom: 6px;
+}
+
+.editar-reserva-card .form-control,
+.editar-reserva-card .form-select {
+    border: 2px solid #e9ecef;
+    border-radius: 10px;
+    padding: 12px 14px;
+    transition: all 0.25s;
+}
+
+.editar-reserva-card .form-control:focus,
+.editar-reserva-card .form-select:focus {
+    border-color: #667eea;
+    box-shadow: 0 0 0 0.18rem rgba(102, 126, 234, 0.25);
+}
+
+/* Botones */
+.editar-reserva-card .btn-primary {
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    border: none;
+    padding: 12px 32px;
+    font-weight: 600;
+    border-radius: 10px;
+    transition: all 0.25s;
+}
+
+.editar-reserva-card .btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 24px rgba(102, 126, 234, 0.5);
+}
+
+.editar-reserva-card .btn-secondary {
+    background: #6c757d;
+    border: none;
+    padding: 12px 32px;
+    font-weight: 600;
+    border-radius: 10px;
+}
+
+.editar-reserva-card .btn-secondary:hover {
+    filter: brightness(1.05);
+}
+
+/* HOME ALUMNO – BOTONES DE ACCION  */
+
+/* estilo base para todos los botones de accion de las cards */
+.items-container .btn-action {
+    border-radius: 999px;
+    border: none;
+    padding: 8px 22px;
+    font-weight: 600;
+    font-size: 0.95rem;
+    box-shadow: 0 10px 24px rgba(0, 0, 0, 0.18);
+    transition: transform 0.2s ease, box-shadow 0.2s ease, filter 0.2s ease;
+}
+
+/* EDITAR – verde pero + prolijo y moderno */
+.items-container .btn-editar {
+    background: linear-gradient(135deg, #34d399, #16a34a); /* verde suave */
+    color: #ffffff;
+}
+
+.items-container .btn-editar:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 12px 30px rgba(22, 163, 74, 0.55);
+}
+
+/* CANCELAR – rojo suave, pill, consistente con el resto */
+.items-container .btn-cancelar {
+    background: linear-gradient(135deg, #f97373, #ef4444);
+    color: #ffffff;
+}
+
+.items-container .btn-cancelar:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 12px 30px rgba(239, 68, 68, 0.55);
+}
+
+/* opcional: boton "Tomar prestamo" y "Devolver" si queremos que sigan el estilo */
+.items-container .btn-tomar,
+.items-container .btn-devolver {
+    background: linear-gradient(135deg, #667eea, #764ba2); /* mismo gradiente azul/violeta */
+    color: #ffffff;
+}
+
+.items-container .btn-tomar:hover,
+.items-container .btn-devolver:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 12px 30px rgba(102, 126, 234, 0.55);
+}
+
+/* EDITAR RESERVA – BOTONES  */
+
+/* Boton PRIMARIO: mismo gradiente que "Solicitar Reserva" */
+.editar-reserva-card .btn-primary {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    border: none;
+    padding: 12px 32px;
+    font-weight: 600;
+    border-radius: 10px;
+    transition: all 0.25s ease;
+    box-shadow: 0 10px 24px rgba(102, 126, 234, 0.45);
+}
+
+.editar-reserva-card .btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 14px 32px rgba(102, 126, 234, 0.55);
+}
+
+/* Boton SECUNDARIO: mismo gris que usamos en "Cancelar" en nueva Reserva */
+.editar-reserva-card .btn-secondary {
+    background: #4b5563;            /* gris oscuro suave */
+    border: none;
+    padding: 12px 32px;
+    font-weight: 600;
+    border-radius: 10px;
+    color: #ffffff;
+    transition: all 0.25s ease;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25);
+}
+
+.editar-reserva-card .btn-secondary:hover {
+    filter: brightness(1.05);
+    transform: translateY(-2px);
+    box-shadow: 0 12px 26px rgba(0, 0, 0, 0.35);
+}
+
+
