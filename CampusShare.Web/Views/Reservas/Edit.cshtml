@@ -1,0 +1,103 @@
+@model CampusShare.Web.Models.Reserva
+@{
+    ViewData["Title"] = "Editar Reserva";
+    var articulos = ViewData["Articulos"] as List<CampusShare.Web.Models.Articulo>;
+}
+
+<div class="editar-reserva-wrapper">
+    <div class="editar-reserva-card">
+
+        <div class="editar-reserva-header">
+            <h2><i class="bi bi-pencil-square"></i> Editar Reserva</h2>
+            <p class="text-muted">Modifique los datos de su reserva pendiente</p>
+        </div>
+
+        <div class="info-box-warning">
+            <i class="bi bi-exclamation-triangle-fill me-1"></i>
+            <strong>Nota:</strong> Solo puede editar reservas en estado <strong>Pendiente</strong>.
+        </div>
+
+        <form asp-action="Edit" method="post">
+            <input type="hidden" asp-for="Id" />
+
+            <!-- Artículo -->
+            <div class="mb-4">
+                <label asp-for="ArticuloId" class="form-label">
+                    <span class="icon-label">
+                        <i class="bi bi-box-seam"></i>
+                        Artículo a Reservar *
+                    </span>
+                </label>
+                <select asp-for="ArticuloId" class="form-select" required>
+                    <option value="" disabled>Seleccione un artículo...</option>
+                    @if (articulos != null)
+                    {
+                        foreach (var articulo in articulos)
+                        {
+                            <option value="@articulo.Id" selected="@(articulo.Id == Model.ArticuloId)">
+                                @articulo.Nombre - @articulo.TipoArticulo
+                            </option>
+                        }
+                    }
+                </select>
+                <span asp-validation-for="ArticuloId" class="text-danger"></span>
+            </div>
+
+            <!-- Fechas -->
+            <div class="row mb-4">
+                <div class="col-md-6">
+                    <label asp-for="FecInicio" class="form-label">
+                        <span class="icon-label">
+                            <i class="bi bi-calendar-event"></i>
+                            Fecha de Inicio *
+                        </span>
+                    </label>
+                    <input asp-for="FecInicio" type="date" class="form-control" required />
+                    <span asp-validation-for="FecInicio" class="text-danger"></span>
+                </div>
+                <div class="col-md-6">
+                    <label asp-for="FecFin" class="form-label">
+                        <span class="icon-label">
+                            <i class="bi bi-calendar-x"></i>
+                            Fecha de Fin *
+                        </span>
+                    </label>
+                    <input asp-for="FecFin" type="date" class="form-control" required />
+                    <span asp-validation-for="FecFin" class="text-danger"></span>
+                </div>
+            </div>
+
+            <!-- Botones -->
+            <div class="row g-3">
+                <div class="col-md-6">
+                    <a href="@Url.Action("MisReservas", "Reservas")" class="btn btn-secondary w-100">
+                        <i class="bi bi-x-circle me-2"></i>Cancelar
+                    </a>
+                </div>
+                <div class="col-md-6">
+                    <button type="submit" class="btn btn-primary w-100">
+                        <i class="bi bi-check-circle me-2"></i>Guardar Cambios
+                    </button>
+                </div>
+            </div>
+        </form>
+
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        const fechaInicio = document.querySelector('input[name="FecInicio"]');
+        const fechaFin = document.querySelector('input[name="FecFin"]');
+        const today = new Date().toISOString().split('T')[0];
+
+        if (fechaInicio && fechaFin) {
+            fechaInicio.setAttribute('min', today);
+            fechaFin.setAttribute('min', today);
+
+            fechaInicio.addEventListener('change', function () {
+                fechaFin.setAttribute('min', this.value);
+            });
+        }
+    </script>
+}

@@ -1,8 +1,234 @@
-﻿@{
-    ViewData["Title"] = "Home Page";
+﻿@model CampusShare.Web.ViewModels.AlumnoHomeViewModel
+@{
+    ViewData["Title"] = "Home - CampusShare";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<div class="container mt-4">
+    <div class="welcome-section">
+        <h2><i class="bi bi-house-door-fill me-2"></i>Bienvenido, @Model.NombreAlumno</h2>
+        <p class="text-muted mb-0">Gestiona tus reservas y préstamos de manera simple</p>
+    </div>
+
+    <div class="filter-section">
+        <label for="tipoSelect">
+            <i class="bi bi-funnel-fill me-2"></i>Reservas / Préstamos
+        </label>
+        <select class="form-select" id="tipoSelect">
+            <option value="reservas" selected>📋 Mis Reservas</option>
+            <option value="prestamos">📦 Mis Préstamos</option>
+        </select>
+    </div>
+
+    <div class="items-container">
+        <a href="@Url.Action("Create", "Reservas")"
+           class="btn btn-action btn-crear main-action-btn"
+           id="btnCrear">
+            <i class="bi bi-plus-circle me-2"></i>Crear Nueva Reserva
+        </a>
+
+        <!-- Sección RESERVAS -->
+        <div id="reservasSection">
+            <h4><i class="bi bi-calendar-check me-2"></i>Mis Reservas</h4>
+
+            @if (Model.Reservas.Any())
+            {
+                foreach (var reserva in Model.Reservas)
+                {
+                    <div class="item-card">
+                        <div class="item-header">
+                            <span class="item-title">
+                                <i class="bi bi-box-seam me-2"></i>@(reserva.Articulo?.Nombre ?? "Sin artículo")
+                            </span>
+
+                            <span class="badge-estado badge-@reserva.Estado.ToString().ToLower()">
+                                @switch (reserva.Estado)
+                                {
+                                    case EstadoRP.Pendiente:
+                                        <i class="bi bi-clock-history me-1"></i><text>PENDIENTE</text>;
+                                        break;
+                                    case EstadoRP.Aprobada:
+                                        <i class="bi bi-check-circle me-1"></i><text>APROBADA</text>;
+                                        break;
+                                    case EstadoRP.Cancelada:
+                                        <i class="bi bi-x-circle me-1"></i><text>CANCELADA</text>;
+                                        break;
+                                    case EstadoRP.Rechazada:
+                                        <i class="bi bi-x-circle me-1"></i><text>RECHAZADA</text>;
+                                        break;
+                                    case EstadoRP.Realizada:
+                                        <i class="bi bi-check-circle me-1"></i><text>REALIZADA</text>;
+                                        break;
+                                }
+                            </span>
+                        </div>
+
+                        <div class="item-details">
+                            <p><strong>Fecha Inicio:</strong> @reserva.FecInicio.ToString("dd/MM/yyyy")</p>
+                            <p><strong>Fecha Fin:</strong> @reserva.FecFin.ToString("dd/MM/yyyy")</p>
+                            <p><strong>Solicitada:</strong> @reserva.FechaSolicitud.ToString("dd/MM/yyyy HH:mm")</p>
+                            @if (!string.IsNullOrEmpty(reserva.MotivoRechazo))
+                            {
+                                <p><strong>Motivo:</strong> <em>@reserva.MotivoRechazo</em></p>
+                            }
+                        </div>
+
+                        <div class="action-buttons">
+                            @if (reserva.Estado == EstadoRP.Pendiente)
+                            {
+                                <a href="@Url.Action("Edit", "Reservas", new { id = reserva.Id })"
+                                   class="btn btn-action btn-editar">
+                                    <i class="bi bi-pencil me-1"></i>Editar
+                                </a>
+                                <form asp-controller="Reservas"
+                                      asp-action="Cancelar"
+                                      asp-route-id="@reserva.Id"
+                                      method="post"
+                                      style="display:inline;"
+                                      onsubmit="return confirm('¿Está seguro que desea cancelar esta reserva?');">
+                                    @Html.AntiForgeryToken()
+                                    <button type="submit" class="btn btn-action btn-cancelar">
+                                        <i class="bi bi-x-circle me-1"></i>Cancelar
+                                    </button>
+                                </form>
+                            }
+                            else if (reserva.Estado == EstadoRP.Aprobada)
+                            {
+                                <form asp-controller="Prestamos"
+                                      asp-action="TomarDesdReserva"
+                                      asp-route-id="@reserva.Id"
+                                      method="post"
+                                      style="display:inline;">
+                                    @Html.AntiForgeryToken()
+                                    <button type="submit" class="btn btn-action btn-tomar">
+                                        <i class="bi bi-box-arrow-down me-1"></i>Tomar Préstamo
+                                    </button>
+                                </form>
+                                <form asp-controller="Reservas"
+                                      asp-action="Cancelar"
+                                      asp-route-id="@reserva.Id"
+                                      method="post"
+                                      style="display:inline;"
+                                      onsubmit="return confirm('¿Está seguro que desea cancelar esta reserva?');">
+                                    @Html.AntiForgeryToken()
+                                    <button type="submit" class="btn btn-action btn-cancelar">
+                                        <i class="bi bi-x-circle me-1"></i>Cancelar
+                                    </button>
+                                </form>
+                            }
+                            else
+                            {
+                                <span class="text-muted">
+                                    <i class="bi bi-info-circle me-1"></i>No hay acciones disponibles
+                                </span>
+                            }
+                        </div>
+                    </div>
+                }
+            }
+            else
+            {
+                <div class="empty-state">
+                    <i class="bi bi-calendar-x"></i>
+                    <h5>No tienes reservas</h5>
+                    <p>Comienza creando una nueva reserva</p>
+                </div>
+            }
+        </div>
+
+        <!-- Sección PRÉSTAMOS -->
+        <div id="prestamosSection" style="display: none;">
+            <h4><i class="bi bi-box-seam me-2"></i>Mis Préstamos</h4>
+
+            @if (Model.Prestamos.Any())
+            {
+                foreach (var prestamo in Model.Prestamos)
+                {
+                    <div class="item-card">
+                        <div class="item-header">
+                            <span class="item-title">
+                                <i class="bi bi-box me-2"></i>@(prestamo.Articulo?.Nombre ?? "Sin artículo")
+                            </span>
+                            <span class="badge-estado badge-@prestamo.Estado.ToString().ToLower()">
+                                @if (prestamo.Estado == EstadoRP.Vigente)
+                                {
+                                    <i class="bi bi-arrow-repeat me-1"></i><text>VIGENTE</text>;
+                                }
+                                else
+                                {
+                                    <i class="bi bi-check-circle me-1"></i><text>DEVUELTO</text>;
+                                }
+                            </span>
+                        </div>
+
+                        <div class="item-details">
+                            <p><strong>Fecha Inicio:</strong> @prestamo.FecInicio.ToString("dd/MM/yyyy")</p>
+                            <p><strong>Fecha Fin:</strong> @prestamo.FecFin.ToString("dd/MM/yyyy")</p>
+                            @if (prestamo.Estado == EstadoRP.Vigente)
+                            {
+                                var diasRestantes = (prestamo.FecFin - DateTime.Now).Days;
+                                <p>
+                                    <strong>Días restantes:</strong>
+                                    <span class="@(diasRestantes <= 3 ? "text-danger" : "text-success") fw-bold">
+                                        @diasRestantes días
+                                    </span>
+                                </p>
+                            }
+                        </div>
+
+                        <div class="action-buttons">
+                            @if (prestamo.Estado == EstadoRP.Vigente)
+                            {
+                                <form asp-controller="Prestamos"
+                                      asp-action="Devolver"
+                                      asp-route-id="@prestamo.Id"
+                                      method="post"
+                                      style="display:inline;"
+                                      onsubmit="return confirm('¿Confirma la devolución de este préstamo?');">
+                                    @Html.AntiForgeryToken()
+                                    <button type="submit" class="btn btn-action btn-devolver">
+                                        <i class="bi bi-box-arrow-up me-1"></i>Devolver
+                                    </button>
+                                </form>
+                            }
+                            else
+                            {
+                                <span class="text-muted">
+                                    <i class="bi bi-check-circle me-1"></i>Préstamo finalizado
+                                </span>
+                            }
+                        </div>
+                    </div>
+                }
+            }
+            else
+            {
+                <div class="empty-state">
+                    <i class="bi bi-box-seam"></i>
+                    <h5>No tienes préstamos</h5>
+                    <p>Los préstamos se generan desde reservas aprobadas</p>
+                </div>
+            }
+        </div>
+    </div>
 </div>
+
+@section Scripts {
+    <script>
+        const tipoSelect = document.getElementById('tipoSelect');
+        const reservasSection = document.getElementById('reservasSection');
+        const prestamosSection = document.getElementById('prestamosSection');
+        const btnCrear = document.getElementById('btnCrear');
+
+        tipoSelect.addEventListener('change', function () {
+            if (this.value === 'reservas') {
+                reservasSection.style.display = 'block';
+                prestamosSection.style.display = 'none';
+                btnCrear.style.display = 'block';
+            } else {
+                reservasSection.style.display = 'none';
+                prestamosSection.style.display = 'block';
+                btnCrear.style.display = 'none';
+            }
+        });
+    </script>
+}

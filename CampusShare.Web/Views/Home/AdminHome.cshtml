@@ -1,0 +1,165 @@
+@model CampusShare.Web.ViewModels.AdminHomeViewModel
+@{
+    ViewData["Title"] = "Admin - CampusShare";
+}
+
+<div class="container mt-4 admin-page">
+
+    <div class="admin-card mb-4">
+        <h2 class="admin-section-title">
+            <i class="bi bi-speedometer2 me-2"></i>Panel de Administración
+        </h2>
+        <p class="text-muted mb-0">Gestioná las reservas y préstamos de los alumnos desde un solo lugar.</p>
+    </div>
+
+    <div class="admin-card mb-4">
+        <label for="alumnoSelect" class="form-label fw-semibold">
+            <i class="bi bi-person-fill me-2"></i>Seleccionar Alumno
+        </label>
+        <select class="form-select" id="alumnoSelect">
+            <option value="" selected disabled>Seleccione un alumno...</option>
+            @foreach (var alumno in Model.Alumnos)
+            {
+                <option value="@alumno.Id">@alumno.Nombre @alumno.Apellido - @alumno.Email</option>
+            }
+        </select>
+    </div>
+
+    <div class="admin-card mb-4">
+        <label for="accionSelect" class="form-label fw-semibold">
+            <i class="bi bi-list-task me-2"></i>Acción a Realizar
+        </label>
+        <select class="form-select" id="accionSelect" disabled>
+            <option value="" selected disabled>Primero seleccione un alumno...</option>
+            <option value="aprobar-reserva">Aprobar o Cancelar Reserva del Alumno</option>
+            <option value="crear-reserva">Crear Reserva para el Alumno</option>
+            <option value="tomar-prestamo">Hacer que el Alumno Tome un Préstamo</option>
+            <option value="devolver-prestamo">Hacer que el Alumno Devuelva un Préstamo</option>
+        </select>
+    </div>
+
+    <div class="admin-card">
+        <h4 class="admin-section-title mb-3">
+            <i class="bi bi-gear-fill me-2"></i>Ejecutar Acción
+        </h4>
+
+        <div id="noActionSelected" class="text-center text-muted py-5">
+            <i class="bi bi-arrow-up-circle" style="font-size: 3rem; opacity: 0.3;"></i>
+            <p class="mt-3">Seleccione un alumno y una acción para continuar</p>
+        </div>
+
+        <div id="aprobarReservaForm" class="action-form" style="display: none;">
+            <h5 class="mb-3">
+                <i class="bi bi-check2-circle me-2"></i>Aprobar o Cancelar Reserva del Alumno
+            </h5>
+            <form id="formAprobarReserva" class="d-flex flex-column gap-3">
+                <input type="hidden" id="aprobarAlumnoId" name="alumnoId" />
+                <div class="mb-3">
+                    <label class="form-label">Reserva Pendiente *</label>
+                    <select class="form-select" name="reservaId" id="selectReservasPendientes" required>
+                        <option value="" selected disabled>Cargando reservas...</option>
+                    </select>
+                </div>
+                <div class="d-flex gap-2">
+                    <button type="submit" class="btn btn-action btn-aprobar-reserva d-flex align-items-center">
+                        <i class="bi bi-check-circle me-2"></i>Aprobar Reserva
+                    </button>
+                    <button type="button" id="btnCancelarReservaDesdeAprobar"
+                            class="btn btn-action btn-cancelar-reserva d-flex align-items-center">
+                        <i class="bi bi-x-circle me-2"></i>Cancelar Reserva
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const alumnoSelect = document.getElementById('alumnoSelect');
+            const accionSelect = document.getElementById('accionSelect');
+            const aprobarReservaForm = document.getElementById('aprobarReservaForm');
+            const noActionSelected = document.getElementById('noActionSelected');
+
+            alumnoSelect.addEventListener('change', function () {
+                if (this.value) {
+                    accionSelect.disabled = false;
+                    accionSelect.value = '';
+                    hideAllForms();
+                }
+            });
+
+            accionSelect.addEventListener('change', async function () {
+                const alumnoId = alumnoSelect.value;
+                hideAllForms();
+                if (this.value === 'aprobar-reserva') {
+                    await cargarReservasPendientes(alumnoId);
+                    aprobarReservaForm.style.display = 'block';
+                }
+            });
+
+            function hideAllForms() {
+                noActionSelected.style.display = 'none';
+                aprobarReservaForm.style.display = 'none';
+            }
+
+            async function cargarReservasPendientes(alumnoId) {
+                const select = document.getElementById('selectReservasPendientes');
+                select.innerHTML = '<option value="">Cargando...</option>';
+                try {
+                    const response = await fetch(`/api/admin/reservas-pendientes/${alumnoId}`);
+                    const reservas = await response.json();
+                    if (reservas.length === 0)
+                        select.innerHTML = '<option value="">No hay reservas pendientes</option>';
+                    else
+                        select.innerHTML = reservas.map(r =>
+                            `<option value="${r.id}">${r.articulo} - ${r.fechaInicio} a ${r.fechaFin}</option>`
+                        ).join('');
+                } catch (error) {
+                    select.innerHTML = '<option value="">Error al cargar reservas</option>';
+                    console.error(error);
+                }
+            }
+
+            document.getElementById('formAprobarReserva').addEventListener('submit', async function (e) {
+                e.preventDefault();
+                const formData = new FormData(this);
+                const reservaId = parseInt(formData.get('reservaId'));
+                try {
+                    const response = await fetch('/api/admin/aprobar-reserva', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ reservaId })
+                    });
+                    if (response.ok) {
+                        alert('✅ Reserva aprobada exitosamente');
+                        location.reload();
+                    } else alert('❌ Error al aprobar la reserva');
+                } catch (error) {
+                    alert('⚠️ Error: ' + error.message);
+                }
+            });
+
+            document.getElementById('btnCancelarReservaDesdeAprobar').addEventListener('click', async function () {
+                const select = document.getElementById('selectReservasPendientes');
+                const reservaId = parseInt(select.value);
+                if (!reservaId) return alert('⚠️ Seleccione una reserva antes de cancelar.');
+                if (!confirm('¿Está seguro que desea cancelar esta reserva?')) return;
+                try {
+                    const response = await fetch('/api/admin/cancelar-reserva', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ reservaId })
+                    });
+                    if (response.ok) {
+                        alert('🗑️ Reserva cancelada exitosamente');
+                        location.reload();
+                    } else alert('❌ Error al cancelar la reserva');
+                } catch (error) {
+                    alert('⚠️ Error: ' + error.message);
+                }
+            });
+        });
+    </script>
+}

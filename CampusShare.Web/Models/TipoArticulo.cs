@@ -1,8 +1,13 @@
-public enum TipoArticulo
+namespace CampusShare.Web.Models
 {
-    CALCULADORA,
-    LIBRO,
-    RESUMEN,
-    APUNTE,
-    AURICULAR
+    public enum TipoArticulo
+    {
+        CALCULADORA,
+        LIBRO,
+        RESUMEN,
+        APUNTE,
+        AURICULAR,
+        REGLA,
+        CAMARA
+    }
 }

@@ -1,0 +1,103 @@
+@model CampusShare.Web.Models.Reserva
+@{
+    ViewData["Title"] = "Nueva Reserva";
+    var articulos = ViewData["Articulos"] as List<CampusShare.Web.Models.Articulo>;
+}
+
+<div class="nueva-reserva-wrapper">
+    <div class="nueva-reserva-card">
+
+        <div class="nueva-reserva-header">
+            <h2><i class="bi bi-calendar-check"></i> Nueva Reserva</h2>
+            <p class="text-muted">Complete el formulario para solicitar la reserva de un artículo</p>
+        </div>
+
+        <div class="nueva-reserva-info">
+            <i class="bi bi-info-circle-fill"></i>
+            <strong>Importante:</strong> Su reserva quedará en estado <strong>Pendiente</strong> hasta que sea aprobada por un administrador.
+        </div>
+
+        <form asp-action="Create" method="post">
+
+            <div class="mb-4">
+                <label asp-for="ArticuloId" class="form-label">
+                    <span class="icon-label">
+                        <i class="bi bi-box-seam"></i>
+                        Artículo a Reservar *
+                    </span>
+                </label>
+                <select asp-for="ArticuloId" class="form-select" required>
+                    <option value="" selected disabled>Seleccione un artículo...</option>
+                    @foreach (var articulo in articulos)
+                    {
+                        <option value="@articulo.Id">@articulo.Nombre - @articulo.TipoArticulo</option>
+                    }
+                </select>
+                <span asp-validation-for="ArticuloId" class="text-danger"></span>
+            </div>
+
+            <div class="row mb-4">
+                <div class="col-md-6">
+                    <label asp-for="FecInicio" class="form-label">
+                        <span class="icon-label">
+                            <i class="bi bi-calendar-event"></i>
+                            Fecha de Inicio *
+                        </span>
+                    </label>
+                    <input asp-for="FecInicio" type="date" class="form-control" required />
+                    <span asp-validation-for="FecInicio" class="text-danger"></span>
+                    <small class="text-muted">Fecha desde la que necesita el artículo</small>
+                </div>
+
+                <div class="col-md-6">
+                    <label asp-for="FecFin" class="form-label">
+                        <span class="icon-label">
+                            <i class="bi bi-calendar-x"></i>
+                            Fecha de Fin *
+                        </span>
+                    </label>
+                    <input asp-for="FecFin" type="date" class="form-control" required />
+                    <span asp-validation-for="FecFin" class="text-danger"></span>
+                    <small class="text-muted">Fecha hasta la que necesita el artículo</small>
+                </div>
+            </div>
+
+            <div class="row g-3">
+                <div class="col-md-6">
+                    <a href="@Url.Action("Index", "Home")" class="btn btn-secondary w-100">
+                        <i class="bi bi-x-circle me-2"></i>Cancelar
+                    </a>
+                </div>
+
+                <div class="col-md-6">
+                    <button type="submit" class="btn btn-primary w-100">
+                        <i class="bi bi-check-circle me-2"></i>Solicitar Reserva
+                    </button>
+                </div>
+            </div>
+
+        </form>
+
+        <div class="text-center mt-4">
+            <small class="text-muted">
+                <i class="bi bi-clock-history me-1"></i>Podrá consultar el estado de su reserva en la página principal
+            </small>
+        </div>
+
+    </div>
+</div>
+
+@section Scripts {
+<script>
+    const fechaInicio = document.querySelector('input[name="FecInicio"]');
+    const fechaFin = document.querySelector('input[name="FecFin"]');
+    const today = new Date().toISOString().split('T')[0];
+
+    fechaInicio.setAttribute('min', today);
+    fechaFin.setAttribute('min', today);
+
+    fechaInicio.addEventListener('change', function () {
+        fechaFin.setAttribute('min', this.value);
+    });
+</script>
+}

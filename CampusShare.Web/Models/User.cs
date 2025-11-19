@@ -5,7 +5,7 @@ namespace CampusShare.Web.Models
     public class User
     {
         [Key]
-        public string Id { get; set; } = Guid.NewGuid().ToString();
+        public int Id { get; set; }
 
         [Required]
         public string Nombre { get; set; } = string.Empty;
@@ -21,24 +21,19 @@ namespace CampusShare.Web.Models
         public string Email { get; set; } = string.Empty;
 
         [Required]
-        [DataType(DataType.Password)]
         public string Password { get; set; } = string.Empty;
 
-        [Required]
-        public string Role { get; set; } = "Alumno"; // por defecto “Alumno”
-
-        // Alias opcional por compatibilidad con las vistas (Register.cshtml usa “Name”)
-        public string Name => $"{Nombre} {Apellido}";
+        public string Role { get; set; } = string.Empty;
 
         public User() { }
 
-        public User(string id, string nombre, string apellido, string dni, string email)
+        public User(string nombre, string apellido, string dni, string email, string role)
         {
-            Id = id;
             Nombre = nombre;
             Apellido = apellido;
             Dni = dni;
             Email = email;
+            Role = role;
         }
     }
 }

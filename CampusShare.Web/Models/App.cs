@@ -13,9 +13,9 @@ namespace CampusShare.Web.Models
             Articulos = new List<Articulo>();
         }
 
-        public void AgregarArticulo(Articulo articulo)
+        public void AgregarArticulo(String nombre, String descripcion, TipoArticulo tipoArticulo)
         {
-            Articulos.Add(articulo);
+            Articulos.Add(new Articulo(nombre, descripcion, tipoArticulo));
         }
 
         public void GenerarDashboard()

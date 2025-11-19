@@ -1,26 +1,46 @@
 using System;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace CampusShare.Web.Models
 {
     public class Prestamo
     {
         [Key]
-        public string? Id { get; set; }
-        public string? FecInicio { get; set; }
-        public string? FecFin { get; set; }
-        public EstadoPrestamo EstadoPrestamo { get; set; } = EstadoPrestamo.VIGENTE;
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        public int Id { get; set; }
 
+        public DateTime FecInicio { get; set; }
+        public DateTime FecFin { get; set; }
+
+        public EstadoRP Estado { get; set; } = EstadoRP.Vigente;
+
+        [ForeignKey("Articulo")]
+        public int? ArticuloId { get; set; }
         public Articulo? Articulo { get; set; }
+
+        [ForeignKey("Alumno")]
+        public int? AlumnoId { get; set; }
+        public Alumno? Alumno { get; set; }
 
         public Prestamo() { }
 
-        public Prestamo(string id, string fecInicio, string fecFin, Articulo articulo)
+        public Prestamo(DateTime fecInicio, DateTime fecFin, Articulo articulo, int alumnoId = 0)
         {
-            Id = id;
             FecInicio = fecInicio;
             FecFin = fecFin;
             Articulo = articulo;
+            ArticuloId = articulo?.Id;
+            AlumnoId = alumnoId == 0 ? null : alumnoId;
+            Estado = EstadoRP.Vigente;
+        }
+
+        internal void Devolvete()
+        {
+            if (Estado == EstadoRP.Vigente)
+            {
+                Estado = EstadoRP.Realizada;
+            }
         }
     }
 }
