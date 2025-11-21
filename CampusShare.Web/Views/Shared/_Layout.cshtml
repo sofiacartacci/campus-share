@@ -48,6 +48,16 @@
                     </li>
                 }
 
+                @* ALUMNO: Mis Préstamos *@
+                @if (User?.IsInRole("Alumno") == true)
+                {
+                    <li class="nav-item">
+                        <a class="nav-link" asp-controller="Prestamos" asp-action="MisPrestamos">
+                            <i class="bi bi-box-seam me-1"></i> Mis Préstamos
+                        </a>
+                    </li>
+                }
+
                 @* ADMIN: Administración *@
                 @if (User?.IsInRole("Administrador") == true)
                 {
@@ -89,7 +99,7 @@
 
                         <ul class="dropdown-menu dropdown-menu-end">
                             <li>
-                                <a class="dropdown-item" asp-controller="Account" asp-action="Profile">
+                                <a class="dropdown-item" asp-controller="Account" asp-action="MiPerfil">
                                     <i class="bi bi-person me-2"></i> Mi Perfil
                                 </a>
                             </li>

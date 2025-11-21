@@ -4716,29 +4716,38 @@
   },
   "projectFileDependencyGroups": {
     "net8.0": [
+      "Microsoft.CodeAnalysis.Analyzers >= 3.3.4",
       "Microsoft.EntityFrameworkCore.SqlServer >= 9.0.10",
       "Microsoft.EntityFrameworkCore.Tools >= 9.0.10"
     ]
   },
   "packageFolders": {
-    "C:\\Users\\scart\\.nuget\\packages\\": {}
+    "C:\\Users\\ramiro.calaza\\.nuget\\packages\\": {},
+    "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\Public\\Documents\\campus-share\\CampusShare.Web\\CampusShare.Web.csproj",
+      "projectUniqueName": "C:\\Users\\ramiro.calaza\\CampusShare\\campus-share\\CampusShare.Web\\CampusShare.Web.csproj",
       "projectName": "CampusShare.Web",
-      "projectPath": "C:\\Users\\Public\\Documents\\campus-share\\CampusShare.Web\\CampusShare.Web.csproj",
-      "packagesPath": "C:\\Users\\scart\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\Public\\Documents\\campus-share\\CampusShare.Web\\obj\\",
+      "projectPath": "C:\\Users\\ramiro.calaza\\CampusShare\\campus-share\\CampusShare.Web\\CampusShare.Web.csproj",
+      "packagesPath": "C:\\Users\\ramiro.calaza\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\ramiro.calaza\\CampusShare\\campus-share\\CampusShare.Web\\obj\\",
       "projectStyle": "PackageReference",
+      "fallbackFolders": [
+        "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
+      ],
       "configFilePaths": [
-        "C:\\Users\\scart\\AppData\\Roaming\\NuGet\\NuGet.Config"
+        "C:\\Users\\ramiro.calaza\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
+        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
         "net8.0"
       ],
       "sources": {
+        "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+        "C:\\Program Files\\dotnet\\library-packs": {},
         "https://api.nuget.org/v3/index.json": {}
       },
       "frameworks": {
@@ -4756,12 +4765,19 @@
         "enableAudit": "true",
         "auditLevel": "low",
         "auditMode": "direct"
-      }
+      },
+      "SdkAnalysisLevel": "10.0.100"
     },
     "frameworks": {
       "net8.0": {
         "targetAlias": "net8.0",
         "dependencies": {
+          "Microsoft.CodeAnalysis.Analyzers": {
+            "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
+            "suppressParent": "All",
+            "target": "Package",
+            "version": "[3.3.4, )"
+          },
           "Microsoft.EntityFrameworkCore.SqlServer": {
             "target": "Package",
             "version": "[9.0.10, )"
@@ -4792,7 +4808,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.319/PortableRuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\10.0.100/PortableRuntimeIdentifierGraph.json"
       }
     }
   }

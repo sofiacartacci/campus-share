@@ -1,0 +1,43 @@
+@model CampusShare.Web.Models.User
+@{
+    ViewData["Title"] = "Mi Perfil";
+}
+
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+
+            <div class="card shadow p-4">
+                <h3 class="text-center mb-4">Mi Perfil</h3>
+
+                <div class="mb-3">
+                    <label class="form-label"><strong>Nombre:</strong></label>
+                    <div>@Model.Nombre</div>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label"><strong>Apellido:</strong></label>
+                    <div>@Model.Apellido</div>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label"><strong>DNI:</strong></label>
+                    <div>@Model.Dni</div>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label"><strong>Email:</strong></label>
+                    <div>@Model.Email</div>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label"><strong>Rol:</strong></label>
+                    <div>@Model.Role</div>
+                </div>
+
+               
+
+            </div>
+        </div>
+    </div>
+</div>

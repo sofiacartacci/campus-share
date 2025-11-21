@@ -8,6 +8,11 @@ namespace CampusShare.Web.Models
         APUNTE,
         AURICULAR,
         REGLA,
-        CAMARA
+        CAMARA,
+        ELECTRONICO,
+        DEPORTIVO,
+        MUSICAL,
+        MOBILIARIO,
+        
     }
 }

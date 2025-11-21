@@ -37,6 +37,12 @@ namespace CampusShare.Web.Controllers
                 var alumnos = await _context.Alumnos.ToListAsync();
                 var articulos = await _context.Articulos.ToListAsync();
 
+                _logger.LogInformation($"Cantidad de alumnos cargados: {alumnos.Count}");
+                foreach (var alumno in alumnos)
+                {
+                    _logger.LogInformation($"Alumno: {alumno.Nombre} {alumno.Apellido} - {alumno.Email}");
+                }
+
                 var viewModel = new AdminHomeViewModel
                 {
                     Alumnos = alumnos,

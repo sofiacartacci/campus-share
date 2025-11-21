@@ -6,7 +6,7 @@ using CampusShare.Web.Models;
 
 namespace CampusShare.Web.Controllers
 {
-    [Authorize(Roles = "Administrador")]
+    [Authorize(Roles = "Admin")]
     [Route("api/admin")]
     [ApiController]
     public class AdminApiController : ControllerBase

@@ -30,7 +30,52 @@ namespace CampusShare.Web.Controllers
             if (!ModelState.IsValid)
                 return View(user);
 
-            await _context.Users.AddAsync(user);
+            var emailExistente = await _context.Users
+                .AnyAsync(u => u.Email == user.Email);
+
+            if (emailExistente)
+            {
+                ModelState.AddModelError("Email", "Este email ya está registrado.");
+                return View(user);
+            }
+
+            var dniExistente = await _context.Users
+                .AnyAsync(u => u.Dni == user.Dni);
+
+            if (dniExistente)
+            {
+                ModelState.AddModelError("Dni", "Este DNI ya está registrado.");
+                return View(user);
+            }
+
+            User nuevoUsuario;
+            
+            if (user.Role == "Admin")
+            {
+                nuevoUsuario = new Admin
+                {
+                    Nombre = user.Nombre,
+                    Apellido = user.Apellido,
+                    Dni = user.Dni,
+                    Email = user.Email,
+                    Password = user.Password,
+                    Role = "Admin"
+                };
+            }
+            else
+            {
+                nuevoUsuario = new Alumno
+                {
+                    Nombre = user.Nombre,
+                    Apellido = user.Apellido,
+                    Dni = user.Dni,
+                    Email = user.Email,
+                    Password = user.Password,
+                    Role = "Alumno"
+                };
+            }
+
+            await _context.Users.AddAsync(nuevoUsuario);
             await _context.SaveChangesAsync();
 
             TempData["Success"] = "Usuario registrado correctamente.";
@@ -89,6 +134,21 @@ namespace CampusShare.Web.Controllers
         public IActionResult AccessDenied()
         {
             return View();
+        }
+
+        // 🔹 Acción para mostrar los datos del usuario logueado
+        [HttpGet]
+        public async Task<IActionResult> MiPerfil()
+        {
+            var idUsuario = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
+
+            var usuario = await _context.Users
+                .FirstOrDefaultAsync(u => u.Id == idUsuario);
+
+            if (usuario == null)
+                return NotFound();
+
+            return View(usuario);
         }
     }
 }

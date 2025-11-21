@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using CampusShare.Web.Context;
 using CampusShare.Web.Models;
+using System.Security.Claims;
 
 namespace CampusShare.Web.Controllers
 {
@@ -19,6 +20,24 @@ namespace CampusShare.Web.Controllers
             var prestamos = await _context.Prestamos
                 .Include(p => p.Articulo)
                 .ToListAsync();
+            return View(prestamos);
+        }
+
+        public async Task<IActionResult> MisPrestamos()
+        {
+            var usuarioIdClaim = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            
+            if (!int.TryParse(usuarioIdClaim, out int usuarioId))
+            {
+                return RedirectToAction("Login", "Account");
+            }
+
+            var prestamos = await _context.Prestamos
+                .Include(p => p.Articulo)
+                .Where(p => p.AlumnoId == usuarioId)
+                .OrderByDescending(p => p.FecInicio)
+                .ToListAsync();
+
             return View(prestamos);
         }
 
@@ -59,7 +78,7 @@ namespace CampusShare.Web.Controllers
                 articulo.Disponible = false;
                 _context.Add(prestamo);
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction("Index", "Home");
             }
             return View(prestamo);
         }
@@ -77,11 +96,14 @@ namespace CampusShare.Web.Controllers
             if (prestamo.Articulo == null)
                 return BadRequest("El préstamo no tiene artículo asociado.");
 
+            prestamo.Estado = EstadoRP.Realizada;
             prestamo.Articulo.Disponible = true;
+            
             _context.Update(prestamo);
             await _context.SaveChangesAsync();
 
-            return RedirectToAction(nameof(Index));
+            TempData["Success"] = "Préstamo devuelto exitosamente.";
+            return RedirectToAction("Index", "Home", new { tab = "prestamos" });
         }
     }
 }

@@ -219,6 +219,18 @@
         const prestamosSection = document.getElementById('prestamosSection');
         const btnCrear = document.getElementById('btnCrear');
 
+        // Leer parámetro 'tab' de la URL
+        const urlParams = new URLSearchParams(window.location.search);
+        const activeTab = urlParams.get('tab');
+
+        // Si hay un tab en la URL, activarlo
+        if (activeTab === 'prestamos') {
+            tipoSelect.value = 'prestamos';
+            reservasSection.style.display = 'none';
+            prestamosSection.style.display = 'block';
+            btnCrear.style.display = 'none';
+        }
+
         tipoSelect.addEventListener('change', function () {
             if (this.value === 'reservas') {
                 reservasSection.style.display = 'block';
