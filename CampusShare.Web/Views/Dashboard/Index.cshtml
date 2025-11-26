@@ -1,0 +1,203 @@
+@model CampusShare.Web.ViewModels.AdminDashboardViewModel
+@{
+    ViewData["Title"] = "Dashboard - Administración";
+}
+
+<div class="container my-5">
+    <h2 class="mb-5 text-center fw-bold">
+        <i class="bi bi-graph-up-arrow text-primary me-2"></i>
+        Dashboard General
+    </h2>
+
+    <div class="row g-4">
+
+        <!-- ALUMNOS -->
+        <div class="col-lg-6">
+            <div class="dashboard-card p-4 shadow-sm rounded-4">
+                <h5 class="section-title mb-3">
+                    <i class="bi bi-people-fill me-2 text-primary"></i>Alumnos
+                </h5>
+
+                <div class="row">
+                    <div class="col-6">
+                        <table class="table table-sm align-middle">
+                            <tr><td><strong>Registrados</strong></td><td>@Model.TotalAlumnos</td></tr>
+                            <tr><td>Con Reservas</td><td>@Model.AlumnosConReservas</td><td class="text-primary">@Model.PorcAlumnosConReserva%</td></tr>
+                            <tr><td>Con Préstamos</td><td>@Model.AlumnosConPrestamos</td><td class="text-primary">@Model.PorcAlumnosConPrestamo%</td></tr>
+                        </table>
+                    </div>
+                    <div class="col-6 d-flex align-items-center justify-content-center">
+                        <canvas id="alumnosChart" width="140" height="140"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- USUARIOS -->
+<div class="col-lg-6">
+    <div class="dashboard-card p-4 shadow-sm rounded-4">
+        <h5 class="section-title mb-3">
+            <i class="bi bi-person-badge-fill me-2 text-primary"></i>Usuarios
+        </h5>
+
+        <div class="row">
+            <div class="col-6">
+                <table class="table table-sm align-middle">
+                    <tr><td><strong>Total Usuarios</strong></td><td>@Model.TotalUsuarios</td></tr>
+                    <tr><td>Alumnos</td><td>@Model.TotalAlumnos</td><td class="text-primary">@Model.PorcAlumnos%</td></tr>
+                    <tr><td>Administradores</td><td>@Model.TotalAdmins</td><td class="text-success">@Model.PorcAdmins%</td></tr>
+                </table>
+
+                <a class="btn btn-primary btn-sm mt-2" asp-controller="Alumnos" asp-action="Index">
+                    <i class="bi bi-pencil-square me-1"></i> Gestionar Usuarios
+                </a>
+            </div>
+
+            <div class="col-6 d-flex align-items-center justify-content-center">
+                <canvas id="usuariosChart" width="140" height="140"></canvas>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+        <!-- PRESTAMOS -->
+        <div class="col-lg-6">
+            <div class="dashboard-card p-4 shadow-sm rounded-4">
+                <h5 class="section-title mb-3">
+                    <i class="bi bi-box-seam me-2 text-primary"></i>Préstamos
+                </h5>
+
+                <div class="row">
+                    <div class="col-6">
+                        <table class="table table-sm align-middle">
+                            <tr><td><strong>Total</strong></td><td>@Model.TotalPrestamos</td></tr>
+                            <tr><td>Vigentes</td><td>@Model.PrestamosVigentes</td><td class="text-primary">@Model.PorcPrestamosVigentes%</td></tr>
+                            <tr><td>Devueltos</td><td>@Model.PrestamosDevueltos</td><td class="text-primary">@Model.PorcPrestamosDevueltos%</td></tr>
+                        </table>
+                    </div>
+                    <div class="col-6 d-flex align-items-center justify-content-center">
+                        <canvas id="prestamosChart" width="140" height="140"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- RESERVAS -->
+        <div class="col-lg-6">
+            <div class="dashboard-card p-4 shadow-sm rounded-4">
+                <h5 class="section-title mb-3">
+                    <i class="bi bi-calendar-check me-2 text-primary"></i>Reservas
+                </h5>
+
+                <div class="row">
+                    <div class="col-6">
+                        <table class="table table-sm align-middle">
+                            <tr><td><strong>Total</strong></td><td>@Model.TotalReservas</td></tr>
+                            <tr><td>Vigentes</td><td>@Model.ReservasVigentes</td><td class="text-primary">@Model.PorcReservasVigentes%</td></tr>
+                            <tr><td>Canceladas</td><td>@Model.ReservasCanceladas</td><td class="text-danger">@Model.PorcReservasCanceladas%</td></tr>
+                        </table>
+                    </div>
+                    <div class="col-6 d-flex align-items-center justify-content-center">
+                        <canvas id="reservasChart" width="140" height="140"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ARTÍCULOS -->
+        <div class="col-lg-6">
+            <div class="dashboard-card p-4 shadow-sm rounded-4">
+                <h5 class="section-title mb-3">
+                    <i class="bi bi-box2-heart me-2 text-primary"></i>Artículos
+                </h5>
+
+                <div class="row">
+                    <div class="col-6">
+                        <table class="table table-sm align-middle">
+                            <tr><td><strong>Total</strong></td><td>@Model.TotalArticulos</td></tr>
+                            <tr><td>Reservados</td><td>@Model.ArticulosReservados</td><td class="text-primary">@Model.PorcArticulosReservados%</td></tr>
+                            <tr><td>Disponibles</td><td>@Model.ArticulosDisponibles</td><td class="text-success">@Model.PorcArticulosDisponibles%</td></tr>
+                        </table>
+                    </div>
+                    <div class="col-6 d-flex align-items-center justify-content-center">
+                        <canvas id="articulosChart" width="140" height="140"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+
+@section Scripts {
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <script>
+        // === Gráfico Alumnos ===
+        new Chart(document.getElementById("alumnosChart"), {
+            type: "doughnut",
+            data: {
+                labels: ["Con Reservas", "Con Préstamos"],
+                datasets: [{
+                    data: [@Model.AlumnosConReservas, @Model.AlumnosConPrestamos],
+                    backgroundColor: ["#4e79a7", "#f28e2b"],
+                    borderWidth: 2
+                }]
+            }
+        });
+        // === Usuarios ===
+        new Chart(document.getElementById("usuariosChart"), {
+            type: "doughnut",
+            data: {
+                labels: ["Alumnos", "Administradores"],
+                datasets: [{
+                    data: [@Model.TotalAlumnos, @Model.TotalAdmins],
+                    backgroundColor: ["#4e79a7", "#59a14f"],
+                    borderWidth: 2
+                }]
+            }
+        });
+
+
+        // === Préstamos ===
+        new Chart(document.getElementById("prestamosChart"), {
+            type: "doughnut",
+            data: {
+                labels: ["Vigentes", "Devueltos"],
+                datasets: [{
+                    data: [@Model.PrestamosVigentes, @Model.PrestamosDevueltos],
+                    backgroundColor: ["#59a14f", "#e15759"],
+                    borderWidth: 2
+                }]
+            }
+        });
+
+        // === Reservas ===
+        new Chart(document.getElementById("reservasChart"), {
+            type: "doughnut",
+            data: {
+                labels: ["Vigentes", "Canceladas"],
+                datasets: [{
+                    data: [@Model.ReservasVigentes, @Model.ReservasCanceladas],
+                    backgroundColor: ["#76b7b2", "#ff9da7"],
+                    borderWidth: 2
+                }]
+            }
+        });
+
+        // === Artículos ===
+        new Chart(document.getElementById("articulosChart"), {
+            type: "doughnut",
+            data: {
+                labels: ["Reservados", "Disponibles"],
+                datasets: [{
+                    data: [@Model.ArticulosReservados, @Model.ArticulosDisponibles],
+                    backgroundColor: ["#edc948", "#b07aa1"],
+                    borderWidth: 2
+                }]
+            }
+        });
+    </script>
+}

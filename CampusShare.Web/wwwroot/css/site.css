@@ -810,4 +810,221 @@ main, .page-content {
     box-shadow: 0 12px 26px rgba(0, 0, 0, 0.35);
 }
 
+/* ============================================================
+   MI PERFIL
+   ============================================================ */
 
+/* Wrapper general */
+.profile-wrapper {
+    display: flex;
+    justify-content: center;
+    padding-top: 60px;
+    padding-bottom: 80px;
+}
+
+/* Card estilo glass */
+.profile-card {
+    background: rgba(255, 255, 255, 0.7);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border-radius: 22px;
+    padding: 40px;
+    width: 100%;
+    max-width: 900px;
+    box-shadow: 0 18px 45px rgba(0, 0, 0, 0.2);
+    border: 1px solid rgba(255, 255, 255, 0.55);
+}
+
+/* Header */
+.profile-header .profile-icon {
+    font-size: 70px;
+    color: #667eea;
+}
+
+.profile-title {
+    font-weight: 700;
+    font-size: 2rem;
+    color: #333;
+    margin-top: 10px;
+}
+
+.profile-subtitle {
+    font-size: 1rem;
+    color: #6c757d;
+}
+
+/* Ítems */
+.profile-item {
+    display: flex;
+    gap: 15px;
+    background: rgba(255,255,255,0.8);
+    padding: 14px 18px;
+    border-radius: 14px;
+    align-items: center;
+    border: 1px solid rgba(223, 227, 250, 0.6);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+}
+
+.profile-item-icon {
+    font-size: 28px;
+    color: #667eea;
+}
+
+.profile-item label {
+    font-weight: 600;
+    color: #333;
+    font-size: 0.95rem;
+    margin: 0;
+}
+
+.profile-item p {
+    margin: 0;
+    color: #555;
+    font-size: 1rem;
+}
+
+/* DASHBOARD */
+
+.dashboard-wrapper {
+    padding-top: 40px;
+    padding-bottom: 60px;
+}
+
+.dashboard-title {
+    font-weight: 700;
+    color: #667eea;
+}
+
+.dashboard-card {
+    background: rgba(255,255,255,0.75);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-radius: 18px;
+    padding: 25px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+    border: 1px solid rgba(255,255,255,0.6);
+}
+
+.card-header-title {
+    background: #e2b59b;
+    font-weight: 700;
+    padding: 8px 12px;
+    border-radius: 5px;
+    margin-bottom: 15px;
+}
+
+.dashboard-table td {
+    padding: 6px 8px;
+    font-size: 0.95rem;
+}
+
+    /* --- alumnos lista --- */
+
+        .gestion-usuarios-wrapper h2 {
+            background: rgba(255,255,255,0.75);
+            backdrop-filter: blur(8px);
+            padding: 15px 22px;
+            border-radius: 14px;
+            display: inline-block;
+        }
+
+        .gestion-usuarios-wrapper .btn-volver {
+            background: #fff;
+            border: 1px solid #d0d4da;
+            padding: 10px 18px;
+            border-radius: 10px;
+            transition: 0.2s ease;
+        }
+
+        .gestion-usuarios-wrapper .btn-volver:hover {
+            background: #e9ecef;
+            transform: translateY(-2px);
+        }
+
+        .gestion-usuarios-wrapper .card {
+            border: none;
+            background: rgba(255,255,255,0.7);
+            backdrop-filter: blur(10px);
+        }
+
+        .gestion-usuarios-wrapper .table thead {
+            background: rgba(240, 240, 240, 0.7);
+        }
+
+        .gestion-usuarios-wrapper .badge {
+            font-size: 0.85rem;
+            padding: 6px 10px;
+        }
+
+        .gestion-usuarios-wrapper .table-hover tbody tr:hover {
+            background-color: rgba(230, 240, 255, 0.55) !important;
+        }
+
+/* ==== RESERVAS PENDIENTES ======================= */
+
+.reservas-pendientes-wrapper {
+    min-height: calc(100vh - 140px); /* deja espacio para header + footer */
+    padding: 40px 0 60px;            /* baja un poco el contenido y footer */
+}
+
+.reservas-pendientes-wrapper h2 {
+    background: rgba(255, 255, 255, 0.78);
+    backdrop-filter: blur(8px);
+    padding: 12px 20px;
+    border-radius: 16px;
+    display: inline-block;
+    font-weight: 700;
+}
+
+.reservas-pendientes-wrapper .reservas-table-card {
+    background: rgba(255, 255, 255, 0.82);
+    backdrop-filter: blur(10px);
+    border-radius: 18px;
+    padding: 10px 12px 4px;
+    box-shadow: 0 10px 28px rgba(0, 0, 0, 0.08);
+}
+
+.reservas-pendientes-wrapper thead.table-light {
+    background-color: rgba(245, 245, 245, 0.9);
+}
+
+.reservas-pendientes-wrapper .table-hover tbody tr:hover {
+    background-color: rgba(230, 240, 255, 0.7);
+}
+
+.reservas-pendientes-wrapper .btn-success.btn-sm {
+    background-color: #28a745;
+    border-color: #28a745;
+}
+
+.reservas-pendientes-wrapper .btn-danger.btn-sm {
+    background-color: #dc3545;
+    border-color: #dc3545;
+}
+
+.reservas-pendientes-wrapper .btn-secondary.btn-sm {
+    background-color: #6c757d;
+    border-color: #6c757d;
+}
+
+/* --------------------------------------------------
+   fix de nav
+-------------------------------------------------- */
+.navbar .dropdown-menu {
+    position: absolute !important;
+    z-index: 99999 !important;
+}
+
+.navbar-nav {
+    z-index: 10000 !important;
+    position: relative;
+}
+
+header {
+    z-index: 5000 !important;
+    position: relative;
+}
+
+.modal-dialog {
+    margin-top: 150px !important;
+}

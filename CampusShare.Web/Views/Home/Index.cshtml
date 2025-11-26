@@ -93,16 +93,6 @@
                             }
                             else if (reserva.Estado == EstadoRP.Aprobada)
                             {
-                                <form asp-controller="Prestamos"
-                                      asp-action="TomarDesdReserva"
-                                      asp-route-id="@reserva.Id"
-                                      method="post"
-                                      style="display:inline;">
-                                    @Html.AntiForgeryToken()
-                                    <button type="submit" class="btn btn-action btn-tomar">
-                                        <i class="bi bi-box-arrow-down me-1"></i>Tomar Préstamo
-                                    </button>
-                                </form>
                                 <form asp-controller="Reservas"
                                       asp-action="Cancelar"
                                       asp-route-id="@reserva.Id"

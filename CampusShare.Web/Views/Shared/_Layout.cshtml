@@ -58,26 +58,35 @@
                     </li>
                 }
 
-                @* ADMIN: Administración *@
-                @if (User?.IsInRole("Administrador") == true)
-                {
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" id="adminDropdown"
-                           role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                            <i class="bi bi-gear me-1"></i> Administración
-                        </a>
+            @if (User?.IsInRole("Administrador") == true || User?.IsInRole("Admin") == true)
+            {
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="adminDropdown"
+                    role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        <i class="bi bi-gear me-1"></i> Administración
+                    </a>
 
-                        <ul class="dropdown-menu" aria-labelledby="adminDropdown">
-                            <li><a class="dropdown-item" asp-controller="Reservas" asp-action="Pendientes"><i class="bi bi-clock-history me-2"></i> Reservas Pendientes</a></li>
-                            <li><a class="dropdown-item" asp-controller="Articulos" asp-action="Manage"><i class="bi bi-box-seam me-2"></i> Gestionar Artículos</a></li>
-                            <li><a class="dropdown-item" asp-controller="Alumnos" asp-action="Index"><i class="bi bi-people me-2"></i> Gestionar Usuarios</a></li>
+                    <ul class="dropdown-menu" aria-labelledby="adminDropdown">
+                        <li><a class="dropdown-item" asp-controller="Reservas" asp-action="Pendientes">
+                            <i class="bi bi-clock-history me-2"></i> Reservas Pendientes</a></li>
 
-                            <li><hr class="dropdown-divider"></li>
+                        <li><a class="dropdown-item" asp-controller="Articulos" asp-action="Manage">
+                            <i class="bi bi-box-seam me-2"></i> Gestionar Artículos</a></li>
 
-                            <li><a class="dropdown-item" asp-controller="Dashboard" asp-action="Index"><i class="bi bi-graph-up me-2"></i> Dashboard</a></li>
-                        </ul>
-                    </li>
-                }
+                        <li><a class="dropdown-item" asp-controller="Alumnos" asp-action="Index">
+                            <i class="bi bi-people me-2"></i> Gestionar Usuarios</a></li>
+
+                        <li><hr class="dropdown-divider"></li>
+
+                        <li>
+                            <a class="dropdown-item" asp-controller="Dashboard" asp-action="Index">
+                                <i class="bi bi-speedometer2 me-2"></i> Dashboard
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+            }
+
 
                 <li class="nav-item">
                     <a class="nav-link" asp-controller="Home" asp-action="Privacy">

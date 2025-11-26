@@ -16,7 +16,7 @@ namespace CampusShare.Web.Controllers
             _context = context;
         }
 
-        [Authorize(Roles = "Administrador")]
+        [Authorize(Roles = "Administrador,Admin,administrador,admin")]
         public async Task<IActionResult> Pendientes()
         {
             var reservasPendientes = await _context.Reservas
@@ -30,7 +30,7 @@ namespace CampusShare.Web.Controllers
         }
 
         [HttpPost]
-        [Authorize(Roles = "Administrador")]
+        [Authorize(Roles = "Administrador,Admin,administrador,admin")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Aprobar(int id)
         {
@@ -65,7 +65,7 @@ namespace CampusShare.Web.Controllers
         }
 
         [HttpPost]
-        [Authorize(Roles = "Administrador")]
+        [Authorize(Roles = "Administrador,Admin,administrador,admin")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Rechazar(int id, string motivo)
         {
@@ -106,39 +106,49 @@ namespace CampusShare.Web.Controllers
         [Authorize]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Cancelar(int id)
-        {
-            var usuarioIdClaim = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            int.TryParse(usuarioIdClaim, out int usuarioId);
-            var esAdmin = User.IsInRole("Administrador");
+{
+    var usuarioIdClaim = User.FindFirstValue(ClaimTypes.NameIdentifier);
+    int.TryParse(usuarioIdClaim, out int usuarioId);
 
-            var reserva = await _context.Reservas.FindAsync(id);
+    // Cualquier variante de rol de admin
+    bool esAdmin = User.IsInRole("Administrador")
+                || User.IsInRole("Admin")
+                || User.IsInRole("ADMIN")
+                || User.IsInRole("administrador");
 
-            if (reserva == null)
-                return NotFound();
+    var reserva = await _context.Reservas.FindAsync(id);
 
-            if (reserva.AlumnoId != usuarioId && !esAdmin)
-                return Forbid();
+    if (reserva == null)
+        return NotFound();
 
-            if (reserva.Estado != EstadoRP.Pendiente && reserva.Estado != EstadoRP.Aprobada)
-            {
-                TempData["Error"] = "Esta reserva no puede ser cancelada.";
-                return esAdmin ? RedirectToAction(nameof(Pendientes)) : RedirectToAction(nameof(MisReservas));
-            }
+    // Si no soy el dueño de la reserva ni admin, no tengo permiso
+    if (reserva.AlumnoId != usuarioId && !esAdmin)
+        return Forbid();
 
-            reserva.Estado = EstadoRP.Cancelada;
+    // Solo se pueden cancelar pendientes o aprobadas
+    if (reserva.Estado != EstadoRP.Pendiente && reserva.Estado != EstadoRP.Aprobada)
+    {
+        TempData["Error"] = "Esta reserva no puede ser cancelada.";
+        return esAdmin ? RedirectToAction(nameof(Pendientes))
+                       : RedirectToAction(nameof(MisReservas));
+    }
 
-            try
-            {
-                await _context.SaveChangesAsync();
-                TempData["Success"] = "Reserva cancelada correctamente.";
-            }
-            catch (Exception ex)
-            {
-                TempData["Error"] = $"Error al cancelar la reserva: {ex.Message}";
-            }
+    reserva.Estado = EstadoRP.Cancelada;
 
-            return esAdmin ? RedirectToAction(nameof(Pendientes)) : RedirectToAction(nameof(MisReservas));
-        }
+    try
+    {
+        await _context.SaveChangesAsync();
+        TempData["Success"] = "Reserva cancelada correctamente.";
+    }
+    catch (Exception ex)
+    {
+        TempData["Error"] = $"Error al cancelar la reserva: {ex.Message}";
+    }
+
+    // Si soy admin vuelvo a la lista de pendientes, si soy alumno a MisReservas
+    return esAdmin ? RedirectToAction(nameof(Pendientes))
+                   : RedirectToAction(nameof(MisReservas));
+}
 
         [Authorize]
         public async Task<IActionResult> MisReservas()

@@ -8,7 +8,7 @@ using CampusShare.Web.Models;
 using CampusShare.Web.ViewModels;
 
 namespace CampusShare.Web.Controllers
-{
+{   
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
@@ -20,7 +20,7 @@ namespace CampusShare.Web.Controllers
             _context = context;
         }
 
-        [Authorize]
+        [Authorize(Roles = "Administrador,Admin,administrador,admin, Alumno,alumno")]
         public async Task<IActionResult> Index()
         {
             var usuarioIdClaim = User.FindFirstValue(ClaimTypes.NameIdentifier);

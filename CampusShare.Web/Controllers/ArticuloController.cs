@@ -6,7 +6,7 @@ using CampusShare.Web.Models;
 
 namespace CampusShare.Web.Controllers
 {
-    [Authorize(Roles = "Admin")]
+    [Authorize(Roles = "Administrador,Admin,administrador,admin")]
     public class ArticulosController : Controller
     {
         private readonly CampusShareDBContext _context;

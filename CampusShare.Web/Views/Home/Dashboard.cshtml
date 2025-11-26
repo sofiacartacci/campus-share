@@ -1,0 +1,118 @@
+@model CampusShare.Web.ViewModels.AdminDashboardViewModel
+@{
+    ViewData["Title"] = "Dashboard";
+}
+
+<div class="dashboard-wrapper">
+
+    <h2 class="dashboard-title mb-4">
+        <i class="bi bi-speedometer2 me-2"></i> Dashboard Administrativo
+    </h2>
+
+    <div class="row g-4">
+
+        <!-- Alumnos -->
+        <div class="col-md-6">
+            <div class="dashboard-card">
+                <div class="card-header-title">
+                    <i class="bi bi-people-fill me-2"></i> Alumnos
+                </div>
+
+                <table class="table table-sm dashboard-table">
+                    <tr><td>Registrados</td><td>@Model.TotalAlumnos</td></tr>
+                    <tr><td>Con Reservas</td><td>@Model.AlumnosConReservas (@Model.PorcAlumnosConReserva%)</td></tr>
+                    <tr><td>Con Préstamos</td><td>@Model.AlumnosConPrestamos (@Model.PorcAlumnosConPrestamo%)</td></tr>
+                </table>
+
+                <canvas id="chartAlumnos"></canvas>
+            </div>
+        </div>
+
+        <!-- Préstamos -->
+        <div class="col-md-6">
+            <div class="dashboard-card">
+                <div class="card-header-title">
+                    <i class="bi bi-box-arrow-right me-2"></i> Préstamos
+                </div>
+
+                <table class="table table-sm dashboard-table">
+                    <tr><td>Total</td><td>@Model.TotalPrestamos</td></tr>
+                    <tr><td>Vigentes</td><td>@Model.PrestamosVigentes (@Model.PorcPrestamosVigentes%)</td></tr>
+                    <tr><td>Devueltos</td><td>@Model.PrestamosDevueltos (@Model.PorcPrestamosDevueltos%)</td></tr>
+                </table>
+
+                <canvas id="chartPrestamos"></canvas>
+            </div>
+        </div>
+
+        <!-- Reservas -->
+        <div class="col-md-6">
+            <div class="dashboard-card">
+                <div class="card-header-title">
+                    <i class="bi bi-calendar-check me-2"></i> Reservas
+                </div>
+
+                <table class="table table-sm dashboard-table">
+                    <tr><td>Total</td><td>@Model.TotalReservas</td></tr>
+                    <tr><td>Vigentes</td><td>@Model.ReservasVigentes (@Model.PorcReservasVigentes%)</td></tr>
+                    <tr><td>Canceladas</td><td>@Model.ReservasCanceladas (@Model.PorcReservasCanceladas%)</td></tr>
+                </table>
+
+                <canvas id="chartReservas"></canvas>
+            </div>
+        </div>
+
+        <!-- Artículos -->
+        <div class="col-md-6">
+            <div class="dashboard-card">
+                <div class="card-header-title">
+                    <i class="bi bi-box-seam me-2"></i> Artículos
+                </div>
+
+                <table class="table table-sm dashboard-table">
+                    <tr><td>Total</td><td>@Model.TotalArticulos</td></tr>
+                    <tr><td>Reservados</td><td>@Model.ArticulosReservados (@Model.PorcArticulosReservados%)</td></tr>
+                    <tr><td>Disponibles</td><td>@Model.ArticulosDisponibles (@Model.PorcArticulosDisponibles%)</td></tr>
+                </table>
+
+                <canvas id="chartArticulos"></canvas>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+@section Scripts {
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <script>
+        function createPieChart(canvasId, labels, data) {
+            new Chart(document.getElementById(canvasId), {
+                type: 'pie',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        data: data,
+                        backgroundColor: ['#f97316', '#1e3a8a'],
+                    }]
+                }
+            });
+        }
+
+        createPieChart("chartAlumnos",
+            ["Con Reservas", "Con Préstamos"],
+            [@Model.AlumnosConReservas, @Model.AlumnosConPrestamos]);
+
+        createPieChart("chartPrestamos",
+            ["Vigentes", "Devueltos"],
+            [@Model.PrestamosVigentes, @Model.PrestamosDevueltos]);
+
+        createPieChart("chartReservas",
+            ["Vigentes", "Canceladas"],
+            [@Model.ReservasVigentes, @Model.ReservasCanceladas]);
+
+        createPieChart("chartArticulos",
+            ["Reservados", "Disponibles"],
+            [@Model.ArticulosReservados, @Model.ArticulosDisponibles]);
+    </script>
+}
